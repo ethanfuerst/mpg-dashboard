@@ -2,6 +2,8 @@
 
 This is an ongoing project where I analyze the MPG data for my car and moped
 
+**Files in this repository:**
+
 *moped_mpg_data.csv* - .csv that stores miles, dollars and gallons of each moped fill up as well as date 
 
 *car_mpg_data.csv* - .csv that stores miles, dollars and gallons of each car fill up as well as date 
@@ -18,7 +20,7 @@ This is an ongoing project where I analyze the MPG data for my car and moped
 
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
 
-**To do next:**
+**TODO:**
 
 * create a tableau dashboard and link in readme
 
