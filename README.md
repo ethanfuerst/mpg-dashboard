@@ -20,5 +20,6 @@ This is an ongoing project where I analyze the MPG data for my car and moped
 
 **To do next:**
 
-*create a tableau dashboard and link in readme
-*learn about representing irregular spaced time series data in matplotlib
+* create a tableau dashboard and link in readme
+
+* learn about representing irregular spaced time series data in matplotlib
