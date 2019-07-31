@@ -2,7 +2,7 @@
 
 This is an ongoing project where I analyze the MPG data for my car and moped
 
-[Here](https://prod-useast-a.online.tableau.com/t/ethanfuerst/views/mpgdatavis/Cardashboard?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no&:origin=viz_share_link) is a link to the Tableau dashboard for this project
+[Here](https://public.tableau.com/profile/ethan.fuerst#!/vizhome/mpgdatavis/Cardashboard) is a link to the Tableau dashboard for this project
 
 **Files in this repository:**
 
