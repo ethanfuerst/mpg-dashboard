@@ -2,6 +2,8 @@
 
 This is an ongoing project where I analyze the MPG data for my car and moped
 
+[Here](https://prod-useast-a.online.tableau.com/t/ethanfuerst/views/mpgdatavis/Cardashboard?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no&:origin=viz_share_link) is a link to the Tableau dashboard for this project
+
 **Files in this repository:**
 
 *moped_mpg_data.csv* - .csv that stores miles, dollars and gallons of each moped fill up as well as date 
@@ -21,7 +23,5 @@ This is an ongoing project where I analyze the MPG data for my car and moped
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
 
 **TODO:**
-
-* create a tableau dashboard and link in readme
 
 * learn about representing irregular spaced time series data in matplotlib and Tableau
