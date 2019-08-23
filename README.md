@@ -24,4 +24,4 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-* learn about representing irregular spaced time series data in matplotlib and Tableau
+- [ ] learn about representing irregular spaced time series data in matplotlib and Tableau
