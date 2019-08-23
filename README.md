@@ -29,3 +29,5 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 	status: posted question on tableau online forum
 
 - [ ] find accurate heat index data for Austin area to compare to my mpg
+
+	status: still looking for heat index data. might have to use temp each day instead, averaged over period between fillups
