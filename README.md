@@ -24,9 +24,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-- [ ] update the dashboard online with new data i've collected
-	
-	status: posted question on tableau online forum
+- [x] update the dashboard online with new data i've collected
 
 - [ ] find accurate heat index data for Austin area to compare to my mpg
 
