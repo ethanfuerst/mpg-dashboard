@@ -24,8 +24,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-- [x] update the dashboard online with new data i've collected
+- [x] Update the dashboard online with new data I've collected
 
-- [ ] find accurate heat index data for Austin area to compare to my mpg
+- [ ] Find accurate heat index data for Austin area to compare to my mpg
 
-	status: still looking for heat index data. might have to use temp each day instead, averaged over period between fillups
+	Status: Still looking for heat index data. Might have to use temp each day instead, averaged over period between fillups
