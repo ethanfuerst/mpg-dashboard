@@ -10,13 +10,15 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *car_mpg_data.csv* - .csv that stores miles, dollars and gallons of each car fill up as well as date 
 
-*mpg_data.ipynb* - notebook that creates new columns in pandas dataframes for analysis. Exports the following three .csvs each time notebook is run (will overwrite)
+*mpg_extract.py* - Exports the following three .csvs each time notebook is run (will overwrite)
 
 *clean_m_data.csv* - .csv that stores moped data to visualize
 
 *clean_c_data.csv* - .csv that stores car data to visualize
 
 *clean_all_data.csv* - .csv that stores data in clean_m_data.csv and clean_c_data.csv, has extra column to differentiate which vehicle fill up was for
+
+*mpg_data.ipynb* - notebook that provides insight to mpg from clean_c_data.csv and clean_m _data.csv 
 
 *mpgdatavis.twb* - tableau workbook where I visualize all data and create a dashboard
 
@@ -29,3 +31,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 - [ ] Find accurate heat index data for Austin area to compare to my mpg
 
 	Status: Still looking for heat index data. Might have to use temp each day instead, averaged over period between fillups
+
+- [ ] create new column - days since last fill up
+
+- [ ] use utilbox to run mpg_extract.py every few days or so to keep cleaned .csvs updated as I update the mpg_data .csvs
+
