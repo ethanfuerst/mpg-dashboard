@@ -20,6 +20,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *mpg_data.ipynb* - notebook that provides insight to mpg from clean_c_data.csv and clean_m _data.csv 
 
+*mpg_workbook.ipynb* - notebook where I work on adding other columns or other things
+
 *mpgdatavis.twb* - tableau workbook where I visualize all data and create a dashboard
 
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
@@ -33,4 +35,6 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 	Status: Still looking for heat index data. Might have to use temp each day instead, averaged over period between fillups
 
 - [ ] create new column - days since last fill up
+	
+	Status: creating a unique id to group the data by when calculating the "days_since_last_fillup" column
 
