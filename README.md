@@ -34,5 +34,3 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 - [ ] create new column - days since last fill up
 
-- [ ] use utilbox to run mpg_extract.py every few days or so to keep cleaned .csvs updated as I update the mpg_data .csvs
-
