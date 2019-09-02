@@ -22,13 +22,13 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *mpg_workbook.ipynb* - notebook where I work on adding other columns or other things
 
+*mpg_extract.command* - command file that I run on my laptop that runs mpg_extract.py to clean the dat and update the .csv files and then pushes changes to github
+
 *mpgdatavis.twb* - tableau workbook where I visualize all data and create a dashboard
 
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
 
 **TODO:**
-
-- [x] Update the dashboard online with new data I've collected
 
 - [ ] Find accurate heat index data for Austin area to compare to my mpg
 
