@@ -38,6 +38,10 @@ df_c['day'] = df_c['day'].apply(as_day)
 df_c = df_c.assign(id=('c' + '-' + df_c['date'].dt.strftime("%d-%b-%Y") + "-" + df_c.index.map(str)))
 df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + df_m.index.map(str)))
 
+# creates a new column that records the number of days since the last fillup
+df_c['days_since_last_fillup'] = df_c['date'].diff().dt.days
+df_m['days_since_last_fillup'] = df_m['date'].diff().dt.days
+
 # creates clean_c_data.csv and clean_m_data.csv
 df_c.to_csv('clean_c_data.csv')
 df_m.to_csv('clean_m_data.csv')
