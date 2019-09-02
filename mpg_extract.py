@@ -24,8 +24,8 @@ df_c['date'] = pd.to_datetime(df_c['date'])
 # creates column with day of the week
 df_m['day'] = df_m['date'].dt.dayofweek
 df_c['day'] = df_c['date'].dt.dayofweek
-pd.to_datetime(df_m['date'])
-pd.to_datetime(df_c['date'])
+# pd.to_datetime(df_m['date'])
+# pd.to_datetime(df_c['date'])
 
 def as_day(i):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
