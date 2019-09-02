@@ -18,8 +18,8 @@ df_m['tank%_used'] = df_m['gallons'] / 1.37
 df_c['tank%_used'] = df_c['gallons'] / 13.55
 
 # changes column to datetime
-df_m['date'] = pd.to_datetime(df_m['date'])
-df_c['date'] = pd.to_datetime(df_c['date'])
+pd.to_datetime(df_m['date'])
+pd.to_datetime(df_c['date'])
 
 # creates column with day of the week
 df_m['day'] = df_m['date'].dt.dayofweek
