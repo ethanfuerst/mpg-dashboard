@@ -34,7 +34,3 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 	Status: Still looking for heat index data. Might have to use temp each day instead, averaged over period between fillups
 
-- [ ] create new column - days since last fill up
-	
-	Status: creating a unique id to group the data by when calculating the "days_since_last_fillup" column
-
