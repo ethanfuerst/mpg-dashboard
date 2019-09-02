@@ -34,10 +34,9 @@ def as_day(i):
 df_m['day'] = df_m['day'].apply(as_day)
 df_c['day'] = df_c['day'].apply(as_day)
 
-df_c['idx'] = 1
-df_c = df_c.assign(id=('c'+df_c['date'].dt.day + df_c['date'].dt.month+df_c['date'].dt.year+df_c['idx'].cumsum()))
-df_m'idx'] = 1
-df_m = df_m.assign(id=('m'+df_m['date'].dt.day + df_m['date'].dt.month+df_m['date'].dt.year+df_m['idx'].cumsum()))
+# creates unique id in the form vehicle-date-index of vechicle df
+df_c = df_c.assign(id=('c' + '-' + df_c['date'].dt.strftime("%d-%b-%Y") + "-" + df_c.index.map(str)))
+df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + df_m.index.map(str)))
 
 # creates clean_c_data.csv and clean_m_data.csv
 df_c.to_csv('clean_c_data.csv')
