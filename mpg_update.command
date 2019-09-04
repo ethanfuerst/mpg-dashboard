@@ -6,5 +6,5 @@ python3 mpg_extract.py
 git add .
 git commit -m 'new fillup'
 git push
-echo "mpg_extract.py complete"
+echo "mpg_update.py complete"
 close
