@@ -24,6 +24,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *carmpg.twb* - tableau workbook where I visualize car mpg data and create a dashboard
 
+*mopedmpg.twb* - tableau workbook for visualizing moped mpg data
+
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
 
 **TODO:**
@@ -31,6 +33,4 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 - [ ] Find accurate heat index data for Austin area to compare to my mpg data
 
 	Status: Still looking for heat index data. Might have to use temp each day instead, averaged over period between fillups
-
-- [ ] Create tableau workbook for moped data
 
