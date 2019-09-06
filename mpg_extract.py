@@ -41,12 +41,16 @@ df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + 
 df_c.to_csv('clean_c_data.csv')
 df_m.to_csv('clean_m_data.csv')
 
-df_m['vehicle'] = 'Moped'
-df_c['vehicle'] = 'Car'
+# I no longer use the file clean_all_data.csv with my tableau workbook
+# Instead, I have two separate workbooks that link to the respective .csvs
+# I've deleted clean_all_data.csv, but the code below will recreate it
 
-# creates and saves clean_all_data.csv
-all_data = pd.concat([df_m, df_c], sort=False)
-all_data = all_data.reset_index()
-all_data.drop(inplace=True,axis=1,columns='index')
+# df_m['vehicle'] = 'Moped'
+# df_c['vehicle'] = 'Car'
 
-all_data.to_csv('clean_all_data.csv', index=True)
+# # creates and saves clean_all_data.csv
+# all_data = pd.concat([df_m, df_c], sort=False)
+# all_data = all_data.reset_index()
+# all_data.drop(inplace=True,axis=1,columns='index')
+
+# all_data.to_csv('clean_all_data.csv', index=True)
