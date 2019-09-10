@@ -32,5 +32,5 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 - [ ] Find accurate heat index data for Austin area to compare to my mpg data
 
-	Status: Could use [this website](https://www.accuweather.com/en/us/austin/78701/january-weather/351193?year=2019&view=list) and use beautiful soup to scrape the data and find average temp for each day
+	Status: Could use [this website](https://darksky.net/dev) and use their API to scrape the data and find average temp for each day
 
