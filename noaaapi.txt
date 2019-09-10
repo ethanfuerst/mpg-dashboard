@@ -1,0 +1,18 @@
+https://www.ncei.noaa.gov/access/services/data/v1?dataset=daily-summaries&stations=WBAN:13958&startDate=2019-04-01&endDate=2019-05-02&format=csv&includeStationName=true
+
+
+
+station number: 72254413958
+
+
+?dataset=global-marine&
+
+dataTypes=WIND_DIR,WIND_SPEED
+&stations=AUCE
+&startDate=2016-01-01
+&endDate=2016-01-02
+&boundingBox=90,-180,-90,180
+
+https://www.ncei.noaa.gov/access/services/data/v1?dataset=global-marine&dataTypes=WIND_DIR,WIND_SPEED&stations=AUCE&startDate=2016-01-01&endDate=2016-01-02&boundingBox=90,-180,-90,180
+
+https://www.ncei.noaa.gov/access/services/data/v1?dataset=global-marine&dataTypes=WIND_DIR,WIND_SPEED&stations=AUCE&startDate=2016-01-01&endDate=2016-01-02&boundingBox=90,-180,-90,180
