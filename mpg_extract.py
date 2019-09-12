@@ -1,5 +1,14 @@
 import pandas as pd
 import datetime as dt
+import pandas as pd
+import matplotlib.pyplot as plt
+import datetime as dt
+from datetime import date, timedelta, datetime
+import urllib.request, json 
+import os
+
+# lets see how long this takes
+startTime = datetime.now()
 
 df_m = pd.read_csv('moped_mpg_data.csv')
 df_m.name = 'Moped Data'
@@ -54,3 +63,5 @@ df_m.to_csv('clean_m_data.csv')
 # all_data.drop(inplace=True,axis=1,columns='index')
 
 # all_data.to_csv('clean_all_data.csv', index=True)
+
+print(datetime.now() - startTime)
