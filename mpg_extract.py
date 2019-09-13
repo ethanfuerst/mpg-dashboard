@@ -9,6 +9,13 @@ import os
 
 # lets see how long this takes
 startTime = datetime.now()
+print("Script is running. Please do not close the window.")
+print("The script will print how long it took to run when it is completed.")
+
+'''
+First I will pull the data from moped_mpg_data.csv and car_mpg_data.csv
+and save them as clean_c_data.csv and clean_m_date.csv
+'''
 
 df_m = pd.read_csv('moped_mpg_data.csv')
 df_m.name = 'Moped Data'
@@ -50,18 +57,61 @@ df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + 
 df_c.to_csv('clean_c_data.csv')
 df_m.to_csv('clean_m_data.csv')
 
-# I no longer use the file clean_all_data.csv with my tableau workbook
-# Instead, I have two separate workbooks that link to the respective .csvs
-# I've deleted clean_all_data.csv, but the code below will recreate it
+'''
+Now to get the weather data from https://darksky.net/
+'''
 
-# df_m['vehicle'] = 'Moped'
-# df_c['vehicle'] = 'Car'
+# https://darksky.net/dev/docs requests I keep my key hidden
+# Going back a directory to access darkskyid.txt and save as my_id
+os.chdir("..")
+my_id = open('darkskyid.txt', 'r').read()
+# Going back to original directory
+os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 
-# # creates and saves clean_all_data.csv
-# all_data = pd.concat([df_m, df_c], sort=False)
-# all_data = all_data.reset_index()
-# all_data.drop(inplace=True,axis=1,columns='index')
+# creating a range of dates to get - shoutout date.today()
+# I'm using a moving average of 3, so doing this I will have data Jan 1 2019
+sdate = date(2018, 12, 30)   # start date - Dec 30 2018
+edate = date.today()       # today
 
-# all_data.to_csv('clean_all_data.csv', index=True)
+delta = edate - sdate       # as timedelta
+
+# creating a list for each day in the range
+# using unix time because that's what the darksky api uses
+# each date will give me the unix time at 6pm for that day
+# the daily_high and daily_low are the parameters that I will use to see how my mpg changes
+date_list = []
+for i in range(1, delta.days + 1):
+    day = sdate + timedelta(days=i)
+    date_list.append(int((day - dt.date(1970,1,1)).total_seconds()))
+
+# creating a list for each api call
+api_list = []
+for i in date_list:
+    api_list.append('https://api.darksky.net/forecast/'+my_id+'/30.267153,-97.7430608,'+str(i)+'?exclude=flags,hourly')
+
+# getting the high temp and low temp for each day
+date = []
+daily_high = []
+daily_low = []
+for api in api_list:
+    with urllib.request.urlopen(api) as url:
+        data = json.loads(url.read().decode())
+        # keeping day in yyyymmdd format, just like in other dataframes
+        date.append(datetime.fromtimestamp(data["currently"]["time"]).strftime("20%y/%m/%d"))
+        daily_high.append(data["daily"]["data"][0]["temperatureHigh"])
+        daily_low.append(data["daily"]["data"][0]["temperatureLow"])
+
+# putting all the lists in to a dateframe
+df_weather = pd.DataFrame({'date': date, 'daily_high': daily_high, 'daily_low': daily_low})
+df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=3).mean()
+df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=3).mean()
+
+# need to drop the records in 2018 that I used for the moving average
+df_weather.drop([0,1], inplace=True)
+# and then reset the index
+df_weather.reset_index(drop=True)
+
+# and finally ... saving the df_weather to a .csv
+df_weather.to_csv('weather_data.csv')
 
 print(datetime.now() - startTime)

@@ -1,2 +1,0 @@
-THIS WORKS:  
-https://api.darksky.net/forecast/********replace with my id***********/30.267153,-97.7430608,20190101
