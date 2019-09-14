@@ -4,13 +4,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime as dt
 from datetime import date, timedelta, datetime
-import urllib.request, json 
-import os
+import urllib.request, json, os, itertools, threading, time, sys
+
+print("Please do not close the window.")
+print("mpg_extract.py will print how long it took to run when it is completed.")
+done = False
+# a nice animation while the program is running
+def animate():
+    for c in itertools.cycle(['|', '/', '-', '\\']):
+        if done:
+            break
+        sys.stdout.write('\rmpg_extract.py is running ' + c)
+        sys.stdout.flush()
+        time.sleep(0.1)
+    sys.stdout.write('\n')
+
+t = threading.Thread(target=animate)
+t.start()
 
 # lets see how long this takes
 startTime = datetime.now()
-print("Script is running. Please do not close the window.")
-print("The script will print how long it took to run when it is completed.")
 
 '''
 First I will pull the data from moped_mpg_data.csv and car_mpg_data.csv
@@ -114,4 +127,8 @@ df_weather.reset_index(drop=True)
 # and finally ... saving the df_weather to a .csv
 df_weather.to_csv('weather_data.csv')
 
-print(datetime.now() - startTime)
+# stop the animation and print the time
+minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
+print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
+
+done = True
