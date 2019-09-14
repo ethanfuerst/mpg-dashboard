@@ -10,7 +10,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *car_mpg_data.csv* - .csv that stores miles, dollars and gallons of each car fill up as well as date 
 
-*mpg_extract.py* - Exports the following three .csvs each time notebook is run (will overwrite)
+*mpg_extract.py* - Exports the following three .csvs each time notebook is run (will overwrite), as well as weather_data.csv
 
 *clean_m_data.csv* - .csv that stores moped data to visualize
 
@@ -28,9 +28,11 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
 
+*weather_data.csv* - .csv that stores the weather data
+
 **TODO:**
 
-- [ ] Find accurate heat index data for Austin area to compare to my mpg data
+- [ ] Visualize both my mpg data and the weather data in the same graph
 
-	Status: Could use [this website](https://darksky.net/dev) and use their API to scrape the data and find average temp for each day
+	Status: Working in carmpg.twb
 
