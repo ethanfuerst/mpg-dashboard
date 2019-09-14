@@ -36,3 +36,15 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 	Status: Working in carmpg.twb
 
+note:
+I no longer use the file clean_all_data.csv with my tableau workbook. Instead, I have two separate workbooks that link to the respective .csvs. I've deleted clean_all_data.csv, but the code below will recreate it
+
+# df_m['vehicle'] = 'Moped'
+# df_c['vehicle'] = 'Car'
+
+# # creates and saves clean_all_data.csv
+# all_data = pd.concat([df_m, df_c], sort=False)
+# all_data = all_data.reset_index()
+# all_data.drop(inplace=True,axis=1,columns='index')
+
+# all_data.to_csv('clean_all_data.csv', index=True)
