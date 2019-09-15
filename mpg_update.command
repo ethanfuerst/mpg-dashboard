@@ -7,4 +7,4 @@ git add .
 git commit -m 'new fillup'
 git push
 echo "mpg_update.py complete"
-close
+exit
