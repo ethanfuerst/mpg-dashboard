@@ -32,9 +32,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-- [ ] Visualize both my mpg data and the weather data in the same graph
-
-	Status: Working in carmpg.twb
+none
 
 note:
 I no longer use the file clean_all_data.csv with my tableau workbook. Instead, I have two separate workbooks that link to the respective .csvs. I've deleted clean_all_data.csv, but the code below will recreate it
