@@ -1,7 +1,6 @@
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
-import datetime as dt
 from datetime import date, timedelta, datetime
 import urllib.request, json, os, itertools, threading, time, sys
 
