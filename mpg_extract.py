@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from datetime import date, timedelta, datetime
 import urllib.request, json, os, itertools, threading, time, sys
 
+# This is used for computing the moving average with the weather data
+window = 5
+
 print("Please do not close the window.")
 print("mpg_extract.py will print how long it took to run when it is completed.")
 done = False
@@ -80,8 +83,10 @@ my_id = open('darkskyid.txt', 'r').read()
 os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 
 # creating a range of dates to get - shoutout date.today()
-# I'm using a moving average of 3, so doing this I will have data Jan 1 2019
-sdate = date(2018, 12, 30)   # start date - Dec 30 2018
+# I'm using a moving average that changes, so doing this I will have data Jan 1 2019
+# window is defined around line 8
+sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
+# sdate = date(2018, 12, 30)   # start date - Dec 30 2018
 edate = date.today()       # today
 
 delta = edate - sdate       # as timedelta
@@ -114,11 +119,12 @@ for api in api_list:
 
 # putting all the lists in to a dateframe
 df_weather = pd.DataFrame({'date': date, 'daily_high': daily_high, 'daily_low': daily_low})
-df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=3).mean()
-df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=3).mean()
+df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
+df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
 
 # need to drop the records in 2018 that I used for the moving average
-df_weather.drop([0,1], inplace=True)
+drop_list = [i for i in range(window-1)]
+df_weather.drop(drop_list, inplace=True)
 # and then reset the index
 df_weather.reset_index(drop=True)
 
