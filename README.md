@@ -34,6 +34,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 - [ ] create SQL server for data
 
+- [ ] add 'cost to go one mile' on tableau dashboard, maybe add more insights like that
+
 - [ ] create mopedmpg dashboard - maybe show how fuel efficient the moped is
 
 note:
