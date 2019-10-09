@@ -32,9 +32,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-- [ ] add total miles per gallon on car dashboard
-
-- [ ] add lines on car dashboard that show when seasons end and begin
+- [ ] create SQL server for data
 
 - [ ] create mopedmpg dashboard - maybe show how fuel efficient the moped is
 
