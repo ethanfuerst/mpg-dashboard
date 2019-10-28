@@ -34,6 +34,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 - [ ] create SQL server for data
 
+- [ ] make mgp_extract run faster by dynamically updating the weather data since the time that I ran it last and not updateing all of it each time it's run
+
 - [ ] add 'cost to go one mile' on tableau dashboard, maybe add more insights like that. Like 'avg days between fillups'
 
 - [ ] create mopedmpg dashboard - maybe show how fuel efficient the moped is
