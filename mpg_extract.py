@@ -87,45 +87,49 @@ os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
 # sdate = date(2018, 12, 30)   # start date - Dec 30 2018
 edate = date.today()       # today
-
 delta = edate - sdate       # as timedelta
 
-# creating a list for each day in the range
-# using unix time because that's what the darksky api uses
-# each date will give me the unix time at 6pm for that day
-# the daily_high and daily_low are the parameters that I will use to see how my mpg changes
-date_list = []
-for i in range(1, delta.days + 1):
-    day = sdate + timedelta(days=i)
-    date_list.append(int((day - dt.date(1970,1,1)).total_seconds()))
+def get_weather(delta):
+    # creating a list for each day in the range
+    # using unix time because that's what the darksky api uses
+    # each date will give me the unix time at 6pm for that day
+    # the daily_high and daily_low are the parameters that I will use to see how my mpg changes
+    date_list = []
+    for i in range(1, delta.days + 1):
+        day = sdate + timedelta(days=i)
+        date_list.append(int((day - dt.date(1970,1,1)).total_seconds()))
 
-# creating a list for each api call
-api_list = []
-for i in date_list:
-    api_list.append('https://api.darksky.net/forecast/'+my_id+'/30.267153,-97.7430608,'+str(i)+'?exclude=flags,hourly')
+    # creating a list for each api call
+    api_list = []
+    for i in date_list:
+        api_list.append('https://api.darksky.net/forecast/'+my_id+'/30.267153,-97.7430608,'+str(i)+'?exclude=flags,hourly')
 
-# getting the high temp and low temp for each day
-date = []
-daily_high = []
-daily_low = []
-for api in api_list:
-    with urllib.request.urlopen(api) as url:
-        data = json.loads(url.read().decode())
-        # keeping day in yyyymmdd format, just like in other dataframes
-        date.append(datetime.fromtimestamp(data["currently"]["time"]).strftime("20%y/%m/%d"))
-        daily_high.append(data["daily"]["data"][0]["temperatureHigh"])
-        daily_low.append(data["daily"]["data"][0]["temperatureLow"])
+    # getting the high temp and low temp for each day
+    date = []
+    daily_high = []
+    daily_low = []
+    for api in api_list:
+        with urllib.request.urlopen(api) as url:
+            data = json.loads(url.read().decode())
+            # keeping day in yyyymmdd format, just like in other dataframes
+            date.append(datetime.fromtimestamp(data["currently"]["time"]).strftime("20%y/%m/%d"))
+            daily_high.append(data["daily"]["data"][0]["temperatureHigh"])
+            daily_low.append(data["daily"]["data"][0]["temperatureLow"])
 
-# putting all the lists in to a dateframe
-df_weather = pd.DataFrame({'date': date, 'daily_high': daily_high, 'daily_low': daily_low})
-df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
-df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
+    # putting all the lists in to a dateframe
+    df_weather = pd.DataFrame({'date': date, 'daily_high': daily_high, 'daily_low': daily_low})
+    df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
+    df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
 
-# need to drop the records in 2018 that I used for the moving average
-drop_list = [i for i in range(window-1)]
-df_weather.drop(drop_list, inplace=True)
-# and then reset the index
-df_weather.reset_index(drop=True)
+    # need to drop the records in 2018 that I used for the moving average
+    drop_list = [i for i in range(window-1)]
+    df_weather.drop(drop_list, inplace=True)
+    # and then reset the index
+    df_weather.reset_index(drop=True)
+
+    return df_weather
+
+df_weather = get_weather(delta)
 
 # and finally ... saving the df_weather to a .csv
 df_weather.to_csv('weather_data.csv')
