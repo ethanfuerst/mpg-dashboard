@@ -163,6 +163,7 @@ else:
 # df_weather = get_weather(delta)
 #%%
 # and finally ... saving the df_weather to a .csv
+df_weather = df_weather[['daily_high', 'daily_low', 'date', 'high_mov_avg', 'low_mov_avg']]
 df_weather.to_csv('weather_data.csv')
 
 # stop the animation and print the time
@@ -170,3 +171,6 @@ minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
 print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
 
 done = True
+
+
+# %%
