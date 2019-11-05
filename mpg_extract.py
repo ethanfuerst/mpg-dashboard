@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 import datetime as dt
 from datetime import date, timedelta, datetime
@@ -6,6 +7,7 @@ import urllib.request, json, os, itertools, threading, time, sys
 # This is used for computing the moving average with the weather data
 window = 5
 
+#%%
 print("Please do not close the window.")
 print("mpg_extract.py will print how long it took to run when it is completed.")
 done = False
@@ -25,6 +27,7 @@ t.start()
 # lets see how long this takes
 startTime = datetime.now()
 
+#%%
 '''
 First I will pull the data from moped_mpg_data.csv and car_mpg_data.csv
 and save them as clean_c_data.csv and clean_m_date.csv
@@ -69,7 +72,7 @@ df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + 
 # creates clean_c_data.csv and clean_m_data.csv
 df_c.to_csv('clean_c_data.csv')
 df_m.to_csv('clean_m_data.csv')
-
+#%%
 '''
 Now to get the weather data from https://darksky.net/
 '''
@@ -81,19 +84,12 @@ my_id = open('darkskyid.txt', 'r').read()
 # Going back to original directory
 os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 
-# creating a range of dates to get - shoutout date.today()
-# I'm using a moving average that changes, so doing this I will have data Jan 1 2019
-# window is defined around line 8
-sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
-# sdate = date(2018, 12, 30)   # start date - Dec 30 2018
-edate = date.today()       # today
-delta = edate - sdate       # as timedelta
-
-def get_weather(delta):
+def get_weather(sdate, edate):
     # creating a list for each day in the range
     # using unix time because that's what the darksky api uses
     # each date will give me the unix time at 6pm for that day
     # the daily_high and daily_low are the parameters that I will use to see how my mpg changes
+    delta = edate - sdate       # as timedelta
     date_list = []
     for i in range(1, delta.days + 1):
         day = sdate + timedelta(days=i)
@@ -121,16 +117,51 @@ def get_weather(delta):
     df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
     df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
 
-    # need to drop the records in 2018 that I used for the moving average
+    # need to drop the records before the sdate
     drop_list = [i for i in range(window-1)]
-    df_weather.drop(drop_list, inplace=True)
+    df_weather = df_weather.drop(drop_list)
     # and then reset the index
     df_weather.reset_index(drop=True)
 
     return df_weather
 
-df_weather = get_weather(delta)
+old_df = pd.read_csv('weather_data.csv')
+old_df.drop('Unnamed: 0', axis=1)
 
+# Get top temp with current window
+sdate = date(2018, 12, 31 - (window - 2))
+edate = date(2019, 1, 2)
+test_df = get_weather(sdate, edate)
+f_temp = test_df['low_mov_avg'].iloc[0]
+
+# If the last date in the df is the same as the yesterday then we are good to go
+date_array = old_df['date'].iloc[-1].split('/')
+old_df_today = date(int('20' + date_array[2]), int(date_array[0]), int(date_array[1]))
+# If the top temp (jan 1) from the small df is the same as the old df
+# and todays date is the same as the most recent date on the old df
+# then we set df_weather to old_df. Nothing changed.
+if (f_temp == old_df['low_mov_avg'].iloc[0]) and (old_df_today == (date.today() - timedelta(1))):
+    df_weather = old_df
+# If the top temp is different, i.e. the moving average changed, we have to recompute everything
+elif  f_temp != old_df['low_mov_avg'].iloc[0]:
+    # creating a range of dates to get - shoutout date.today()
+    # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
+    # window is defined around line 8
+    sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
+    edate = date.today()       # today
+    delta = edate - sdate       # as timedelta
+    df_weather = get_weather(sdate, edate)
+# Lastly, if the top temp is the same then we can just add the days that we have been missing
+else:
+    l_date = old_df['date'].iloc[-1].split('/')
+    l_date[2] = '20' + l_date[2]
+    sdate = date(int(l_date[2]), int(l_date[0]), int(l_date[1])) + timedelta(1)   # last date - (window - 2)
+    edate = date.today() - timedelta(window - 2)       # today - 2 days
+    new_days = get_weather(sdate, edate)
+    df_weather = pd.concat([old_df, new_days], sort=False)
+
+# df_weather = get_weather(delta)
+#%%
 # and finally ... saving the df_weather to a .csv
 df_weather.to_csv('weather_data.csv')
 
