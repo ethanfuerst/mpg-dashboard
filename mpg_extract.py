@@ -132,7 +132,7 @@ old_df.drop('Unnamed: 0', axis=1)
 sdate = date(2018, 12, 31 - (window - 2))
 edate = date(2019, 1, 2)
 test_df = get_weather(sdate, edate)
-f_temp = test_df['low_mov_avg'].iloc[0]
+f_temp = test_df['low_mov_avg'].iloc[0].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
 date_array = old_df['date'].iloc[-1].split('/')
