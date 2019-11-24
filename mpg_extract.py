@@ -136,7 +136,7 @@ f_temp = test_df['low_mov_avg'].iloc[0].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
 date_array = old_df['date'].iloc[-1].split('/')
-old_df_today = date(int('20' + date_array[2]), int(date_array[0]), int(date_array[1]))
+old_df_today = date(int(date_array[0]), int(date_array[1]), int(date_array[2]))
 # If the top temp (jan 1) from the small df is the same as the old df
 # and todays date is the same as the most recent date on the old df
 # then we set df_weather to old_df. Nothing changed.
@@ -154,8 +154,7 @@ elif  f_temp != old_df['low_mov_avg'].iloc[0]:
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
     l_date = old_df['date'].iloc[-1].split('/')
-    l_date[2] = '20' + l_date[2]
-    sdate = date(int(l_date[2]), int(l_date[0]), int(l_date[1])) + timedelta(1)   # last date - (window - 2)
+    sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date - (window - 2)
     edate = date.today() - timedelta(window - 2)       # today - 2 days
     new_days = get_weather(sdate, edate)
     df_weather = pd.concat([old_df, new_days], sort=False)
@@ -163,7 +162,8 @@ else:
 # df_weather = get_weather(delta)
 #%%
 # and finally ... saving the df_weather to a .csv
-df_weather = df_weather[['daily_high', 'daily_low', 'date', 'high_mov_avg', 'low_mov_avg']]
+df_weather.reset_index()
+df_weather = df_weather[['date', 'daily_high', 'daily_low', 'high_mov_avg', 'low_mov_avg']]
 df_weather.to_csv('weather_data.csv')
 
 # stop the animation and print the time
