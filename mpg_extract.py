@@ -80,11 +80,15 @@ Now to get the weather data from https://darksky.net/
 # https://darksky.net/dev/docs requests I keep my key hidden
 # Going back a directory to access darkskyid.txt and save as my_id
 os.chdir("..")
-my_id = open('darkskyid.txt', 'r').read()
+id = open('darkskyid.txt', 'r').read()
 # Going back to original directory
 os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 
-def get_weather(sdate, edate):
+def get_weather(sdate, edate, lat, long, window, id):
+    '''
+    This method returns a dataframe that contains the high temp, low temp, moving average high and moving average low for a range of days.
+
+    '''
     # creating a list for each day in the range
     # using unix time because that's what the darksky api uses
     # each date will give me the unix time at 6pm for that day
@@ -98,7 +102,7 @@ def get_weather(sdate, edate):
     # creating a list for each api call
     api_list = []
     for i in date_list:
-        api_list.append('https://api.darksky.net/forecast/'+my_id+'/30.267153,-97.7430608,'+str(i)+'?exclude=flags,hourly')
+        api_list.append('https://api.darksky.net/forecast/'+str(id)+'/'+str(lat)+','+str(long)+','+str(i)+'?exclude=flags,hourly')
 
     # getting the high temp and low temp for each day
     date = []
@@ -131,7 +135,7 @@ old_df.drop('Unnamed: 0', axis=1)
 # Get top temp with current window
 sdate = date(2018, 12, 31 - (window - 2))
 edate = date(2019, 1, 2)
-test_df = get_weather(sdate, edate)
+test_df = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
 f_temp = test_df['low_mov_avg'].iloc[0].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
@@ -150,19 +154,19 @@ elif  f_temp != old_df['low_mov_avg'].iloc[0]:
     sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
     edate = date.today()       # today
     delta = edate - sdate       # as timedelta
-    df_weather = get_weather(sdate, edate)
+    df_weather = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date - (window - 2)
     edate = date.today() - timedelta(window - 2)       # today - 2 days
-    new_days = get_weather(sdate, edate)
+    new_days = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
     df_weather = pd.concat([old_df, new_days], sort=False)
 
 # df_weather = get_weather(delta)
 #%%
 # and finally ... saving the df_weather to a .csv
-df_weather.reset_index()
+df_weather.reset_index(drop=True)
 df_weather = df_weather[['date', 'daily_high', 'daily_low', 'high_mov_avg', 'low_mov_avg']]
 df_weather.to_csv('weather_data.csv')
 
