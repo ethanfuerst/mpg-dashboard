@@ -95,7 +95,7 @@ def get_weather(sdate, edate, lat, long, window, id):
     # the daily_high and daily_low are the parameters that I will use to see how my mpg changes
     delta = edate - sdate       # as timedelta
     date_list = []
-    for i in range(1, delta.days + 1):
+    for i in range(window * -1, delta.days + 1):
         day = sdate + timedelta(days=i)
         date_list.append(int((day - dt.date(1970,1,1)).total_seconds()))
 
@@ -122,10 +122,10 @@ def get_weather(sdate, edate, lat, long, window, id):
     df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
 
     # need to drop the records before the sdate
-    drop_list = [i for i in range(window-1)]
+    drop_list = [i for i in range(window+1)]
     df_weather = df_weather.drop(drop_list)
     # and then reset the index
-    df_weather.reset_index(drop=True)
+    df_weather.reset_index(drop=True, inplace=True)
 
     return df_weather
 
@@ -153,7 +153,6 @@ elif  f_temp != old_df['low_mov_avg'].iloc[0]:
     # window is defined around line 8
     sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
     edate = date.today()       # today
-    delta = edate - sdate       # as timedelta
     df_weather = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
