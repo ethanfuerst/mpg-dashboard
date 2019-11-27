@@ -105,19 +105,19 @@ def get_weather(sdate, edate, lat, long, window, id):
         api_list.append('https://api.darksky.net/forecast/'+str(id)+'/'+str(lat)+','+str(long)+','+str(i)+'?exclude=flags,hourly')
 
     # getting the high temp and low temp for each day
-    date = []
+    dates = []
     daily_high = []
     daily_low = []
     for api in api_list:
         with urllib.request.urlopen(api) as url:
             data = json.loads(url.read().decode())
             # keeping day in yyyymmdd format, just like in other dataframes
-            date.append(datetime.fromtimestamp(data["currently"]["time"]).strftime("20%y/%m/%d"))
+            dates.append(datetime.fromtimestamp(data["currently"]["time"]).strftime("20%y/%m/%d"))
             daily_high.append(data["daily"]["data"][0]["temperatureHigh"])
             daily_low.append(data["daily"]["data"][0]["temperatureLow"])
 
     # putting all the lists in to a dateframe
-    df_weather = pd.DataFrame({'date': date, 'daily_high': daily_high, 'daily_low': daily_low})
+    df_weather = pd.DataFrame({'date': dates, 'daily_high': daily_high, 'daily_low': daily_low})
     df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
     df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
 
@@ -136,7 +136,7 @@ old_df.drop('Unnamed: 0', axis=1)
 sdate = date(2018, 12, 31 - (window - 2))
 edate = date(2019, 1, 2)
 test_df = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
-f_temp = test_df['low_mov_avg'].iloc[0].round(3)
+f_temp = test_df['low_mov_avg'].iloc[-1].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
 date_array = old_df['date'].iloc[-1].split('/')
@@ -157,15 +157,15 @@ elif  f_temp != old_df['low_mov_avg'].iloc[0]:
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
     l_date = old_df['date'].iloc[-1].split('/')
-    sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date - (window - 2)
-    edate = date.today() - timedelta(window - 2)       # today - 2 days
+    sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
+    edate = date.today()       # today
     new_days = get_weather(sdate=sdate, edate=edate, lat=30.267153, long=-97.7430608, window=window, id=id)
     df_weather = pd.concat([old_df, new_days], sort=False)
 
 # df_weather = get_weather(delta)
 #%%
 # and finally ... saving the df_weather to a .csv
-df_weather.reset_index(drop=True)
+df_weather.reset_index(drop=True, inplace=True)
 df_weather = df_weather[['date', 'daily_high', 'daily_low', 'high_mov_avg', 'low_mov_avg']]
 df_weather.to_csv('weather_data.csv')
 
@@ -174,6 +174,5 @@ minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
 print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
 
 done = True
-
 
 # %%
