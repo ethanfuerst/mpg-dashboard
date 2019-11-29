@@ -155,7 +155,7 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     return df_weather
 
 old_df = pd.read_csv('weather_data.csv')
-old_df.drop('Unnamed: 0', axis=1)
+old_df.drop('Unnamed: 0', axis=1, inplace=True)
 
 # Get top temp with current window
 sdate = date(2018, 12, 31 - (window - 2))
@@ -169,10 +169,12 @@ old_df_today = date(int(date_array[0]), int(date_array[1]), int(date_array[2]))
 # If the top temp (jan 1) from the small df is the same as the old df
 # and todays date is the same as the most recent date on the old df
 # then we set df_weather to old_df. Nothing changed.
-if (f_temp == old_df['low_mov_avg'].iloc[0]) and (old_df_today == (date.today() - timedelta(1))):
+if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date.today() - timedelta(1))):
+    print('Nothing changed')
     df_weather = old_df
 # If the top temp is different, i.e. the moving average changed, we have to recompute everything
-elif  f_temp != old_df['low_mov_avg'].iloc[0]:
+elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
+    print('Change everything')
     # creating a range of dates to get - shoutout date.today()
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
@@ -181,10 +183,14 @@ elif  f_temp != old_df['low_mov_avg'].iloc[0]:
     df_weather = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
+    print('Add dates')
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
     new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
     df_weather = pd.concat([old_df, new_days], sort=False)
+
+# Need to figure out when to use this
+# df_weather.drop([i for i in range(0, window - 1)], inplace=True)
 
 #%%
 # and finally ... saving the df_weather to a .csv
