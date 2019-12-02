@@ -170,20 +170,15 @@ old_df_today = date(int(date_array[0]), int(date_array[1]), int(date_array[2]))
 # and todays date is the same as the most recent date on the old df
 # then we set df_weather to old_df. Nothing changed.
 if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date.today() - timedelta(1))):
-    print('Nothing changed')
     df_weather = old_df
 # If the top temp is different, i.e. the moving average changed, we have to recompute everything
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
-    print('Change everything')
     # creating a range of dates to get - shoutout date.today()
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
-    sdate = date(2018, 12, 31 - (window - 2))   # start date - Dec 31 2018 - (window - 2)
-    edate = date.today()       # today
-    df_weather = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
+    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
-    print('Add dates')
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
     new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
