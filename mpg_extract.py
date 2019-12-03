@@ -158,7 +158,7 @@ old_df = pd.read_csv('weather_data.csv')
 old_df.drop('Unnamed: 0', axis=1, inplace=True)
 
 # Get top temp with current window
-sdate = date(2018, 12, 31 - (window - 2))
+sdate = date(2018, 12, 31) - timedelta(window)
 edate = date(2019, 1, 2)
 test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window, edate=edate)
 f_temp = test_df['low_mov_avg'].iloc[-1].round(3)
@@ -173,12 +173,14 @@ if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date
     df_weather = old_df
 # If the top temp is different, i.e. the moving average changed, we have to recompute everything
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
+    print('everything')
     # creating a range of dates to get - shoutout date.today()
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
     df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
+    print('append')
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
     new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
@@ -190,7 +192,6 @@ else:
 #%%
 # and finally ... saving the df_weather to a .csv
 df_weather.reset_index(drop=True, inplace=True)
-df_weather = df_weather[['date', 'daily_high', 'daily_low', 'high_mov_avg', 'low_mov_avg']]
 df_weather.to_csv('weather_data.csv')
 
 # stop the animation and print the time
