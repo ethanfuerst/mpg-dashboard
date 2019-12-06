@@ -143,8 +143,8 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     # putting all the lists in to a dateframe
     df_weather = pd.DataFrame({'date': dates, 'daily_high': daily_high, 'daily_low': daily_low})
     if window != 1:
-        df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean()
-        df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean()
+        df_weather['high_mov_avg'] = df_weather['daily_high'].rolling(window=window).mean().round(3)
+        df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean().round(3)
 
     # need to drop the records before the sdate
     drop_list = [i for i in range(window+1)]
@@ -173,7 +173,6 @@ if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date
     df_weather = old_df
 # If the top temp is different, i.e. the moving average changed, we have to recompute everything
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
-    # creating a range of dates to get - shoutout date.today()
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
     df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=id, window=window)
