@@ -183,6 +183,8 @@ else:
     new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
     df_weather = pd.concat([old_df, new_days], sort=False)
 
+df_weather['difference'] = df_weather['daily_high'] - df_weather['daily_low']
+df_weather['mov_avg_diff'] = df_weather['high_mov_avg'] - df_weather['low_mov_avg']
 #%%
 # and finally ... saving the df_weather to a .csv
 df_weather.reset_index(drop=True, inplace=True)
