@@ -173,11 +173,13 @@ if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date
     df_weather = old_df
 # If the top temp is different, i.e. the moving average changed, we have to recompute everything
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
+    print('Remake')
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
     df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
+    print('Append')
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
     new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
