@@ -16,9 +16,9 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *clean_c_data.csv* - .csv that stores car data to visualize
 
-*mpg_data.ipynb* - notebook that provides insight to mpg from clean_c_data.csv
+*mpg_data.py* - .py file that provides insight to mpg from clean_c_data.csv
 
-*mpg_workbook.ipynb* - notebook where I work on adding other columns or other things
+*mpg_workbook.py* - .py file where I work on adding other columns or other things
 
 *mpg_update.command* - command file that I run on my laptop that runs mpg_extract.py to clean the data and update the .csv files and then pushes changes to github
 
@@ -26,7 +26,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 *mopedmpg.twb* - tableau workbook for visualizing moped mpg data
 
-*mpg_vis.ipynb* - notebook where I visualize data with matplotlib/seaborn and other python packages
+*mpg_vis.py* - .py file where I visualize data with matplotlib/seaborn and other python packages
 
 *weather_data.csv* - .csv that stores the weather data
 
