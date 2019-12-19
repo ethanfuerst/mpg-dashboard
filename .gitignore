@@ -1,5 +1,6 @@
 # Folder view configuration files
 .DS_Store
+.ipynb_checkpoints
 
 # Icon
 Icon\r
