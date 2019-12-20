@@ -1,6 +1,7 @@
 # Folder view configuration files
 .DS_Store
 .ipynb_checkpoints
+.~carmpg__*
 
 # Icon
 Icon\r
