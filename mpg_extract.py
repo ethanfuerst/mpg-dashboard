@@ -65,13 +65,17 @@ for i in [df_m, df_c]:
     # creates a new column that records the number of days since the last fillup
     i['days_since_last_fillup'] = i['date'].diff().dt.days
 
+    # add column for cost to go one mile
+    i['dollars per mile'] = i['dollars'] / i['miles']
+
 # creates unique id in the form vehicle-date-index of vechicle df
 df_c = df_c.assign(id=('c' + '-' + df_c['date'].dt.strftime("%d-%b-%Y") + "-" + df_c.index.map(str)))
 df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + df_m.index.map(str)))
 
 # creates clean_c_data.csv and clean_m_data.csv
-df_c.to_csv('clean_c_data.csv')
-df_m.to_csv('clean_m_data.csv')
+df_c.to_csv('clean_c_data.csv', index=False)
+df_m.to_csv('clean_m_data.csv', index=False)
+
 #%%
 '''
 Now to get the weather data from https://darksky.net/
