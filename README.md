@@ -38,6 +38,8 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 - [ ] create mopedmpg dashboard - maybe show how fuel efficient the moped is
 
+- [ ] can I just change the car_mpg_data file instead of making new .csv files?
+
 note:
 I no longer use the file clean_all_data.csv with my tableau workbook. Instead, I have two separate workbooks that link to the respective .csvs. I've deleted clean_all_data.csv, but the code below will recreate it
 
