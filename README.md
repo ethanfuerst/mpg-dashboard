@@ -32,25 +32,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 **TODO:**
 
-- [ ] create SQL server for data
-
-- [ ] add 'cost to go one mile' on tableau dashboard, maybe add more insights like that. Like 'avg days between fillups'
-
-- [ ] create mopedmpg dashboard - maybe show how fuel efficient the moped is
-
-- [ ] can I just change the car_mpg_data file instead of making new .csv files?
-
-note:
-I no longer use the file clean_all_data.csv with my tableau workbook. Instead, I have two separate workbooks that link to the respective .csvs. I've deleted clean_all_data.csv, but the code below will recreate it
-
-```
-df_m['vehicle'] = 'Moped'
-df_c['vehicle'] = 'Car'
-
-# creates and saves clean_all_data.csv
-all_data = pd.concat([df_m, df_c], sort=False)
-all_data = all_data.reset_index()
-all_data.drop(inplace=True,axis=1,columns='index')
-
-all_data.to_csv('clean_all_data.csv', index=True)
-```
+- [ ] delete moped data. I don't use it
+- [ ] spilt tableau dashboard. One for my car and the other for mpg and weather
+- [ ] change the car_mpg_data file instead of making new .csv files
+- [ ] add 'cost to go one mile' on tableau dashboard and 'avg days between fillups'
