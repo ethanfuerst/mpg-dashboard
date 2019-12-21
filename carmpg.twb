@@ -2654,7 +2654,7 @@
       </viewpoint>
       <simple-id uuid='{343799DD-38C3-4456-9FAC-9AA4CF061DE0}' />
     </window>
-    <window class='worksheet' maximized='true' name='MPG vs. Miles' tab-color='#4f779a'>
+    <window class='worksheet' name='MPG vs. Miles' tab-color='#4f779a'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2814,7 +2814,7 @@
       </viewpoint>
       <simple-id uuid='{5D133D56-1428-452C-94E7-6C92A9CDC808}' />
     </window>
-    <window class='dashboard' name='Gas Tank Dashboard'>
+    <window class='dashboard' maximized='true' name='Gas Tank Dashboard'>
       <viewpoints>
         <viewpoint name='Average Miles Per Gallon'>
           <zoom type='fit-width' />
