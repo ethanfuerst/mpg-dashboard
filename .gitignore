@@ -3,6 +3,9 @@
 .ipynb_checkpoints
 .~carmpg__*
 
+# .command file that runs mpg_refresh.py
+mpg_update.command
+
 # Icon
 Icon\r
 Icon\r\r
