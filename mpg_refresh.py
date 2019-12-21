@@ -3,26 +3,28 @@ import pandas as pd
 import datetime as dt
 from datetime import date, timedelta, datetime
 import urllib.request, json, os, itertools, threading, time, sys
+from mpg_insights import mpg_insights
 
 # This is used for computing the moving average with the weather data
 window = 5
 
 #%%
-print("Please do not close the window.")
-print("mpg_extract.py will print how long it took to run when it is completed.")
-done = False
-# a nice animation while the program is running
-def animate():
-    for c in itertools.cycle(['|', '/', '-', '\\']):
-        if done:
-            break
-        sys.stdout.write('\rmpg_extract.py is running ' + c)
-        sys.stdout.flush()
-        time.sleep(0.1)
-    sys.stdout.write('\n')
+if __name__ == '__main__':
+    print("Please do not close the window.")
+    print("mpg_extract.py will print how long it took to run when it is completed.")
+    done = False
+    # a nice animation while the program is running
+    def animate():
+        for c in itertools.cycle(['|', '/', '-', '\\']):
+            if done:
+                break
+            sys.stdout.write('\rmpg_extract.py is running ' + c)
+            sys.stdout.flush()
+            time.sleep(0.1)
+        sys.stdout.write('\n')
 
-t = threading.Thread(target=animate)
-t.start()
+    t = threading.Thread(target=animate)
+    t.start()
 
 # lets see how long this takes
 startTime = datetime.now()
@@ -35,36 +37,46 @@ and save it back to car_mpg_data.csv
 
 df = pd.read_csv('car_mpg_data.csv')
 df.name = 'Car Data'
-df = df[['miles', 'dollars', 'gallons',	'date']].copy()
 
-# creating gal_cost and mpg
-df['gal_cost'] = df['dollars'] / df['gallons']
-df['mpg'] = df['miles'] / df['gallons']
+def mpg_data_creator(df):
+    '''
+    When passed a df with these columns:
+    miles, dollars, gallons, date
+    this method will return a df with the following columns:
+    gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile
+    '''
+    df = df[['miles', 'dollars', 'gallons', 'date']].copy()
 
-# creating a new column to determine what percent of my tank was used up when filled up
-# car tank size = 13.55 gallons
-df['tank%_used'] = df['gallons'] / 13.55
+    # creating gal_cost and mpg
+    df['gal_cost'] = df['dollars'] / df['gallons']
+    df['mpg'] = df['miles'] / df['gallons']
 
-# following method used in for loop
-def as_day(i):
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    return days[i]
+    # creating a new column to determine what percent of my tank was used up when filled up
+    # car tank size = 13.55 gallons
+    df['tank%_used'] = df['gallons'] / 13.55
 
-# changes column to datetime
-df['date'] = pd.to_datetime(df['date'])
+    # following method used in for loop
+    def as_day(i):
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        return days[i]
 
-# creates column with day of the week
-df['day'] = df['date'].dt.dayofweek
-df['day'] = df['day'].apply(as_day)
+    # changes column to datetime
+    df['date'] = pd.to_datetime(df['date'])
 
-# creates a new column that records the number of days since the last fillup
-df['days_since_last_fillup'] = df['date'].diff().dt.days
+    # creates column with day of the week
+    df['weekday'] = df['date'].dt.dayofweek
+    df['weekday'] = df['weekday'].apply(as_day)
 
-# add column for cost to go one mile
-df['dollars per mile'] = df['dollars'] / df['miles']
+    # creates a new column that records the number of days since the last fillup
+    df['days_since_last_fillup'] = df['date'].diff().dt.days
 
-# creates unique id in the form vehicle-date-index of vechicle df
-df = df.assign(id=('c' + '-' + df['date'].dt.strftime("%d-%b-%Y") + "-" + df.index.map(str)))
+    # add column for cost to go one mile
+    df['dollars per mile'] = df['dollars'] / df['miles']
+
+    return df
+
+df = mpg_data_creator(df)
+df.name = 'Car data'
 
 # save back to car_mpg_data.csv
 df.to_csv('car_mpg_data.csv', index=False)
@@ -187,10 +199,12 @@ df_weather['mov_avg_diff'] = df_weather['high_mov_avg'] - df_weather['low_mov_av
 df_weather.reset_index(drop=True, inplace=True)
 df_weather.to_csv('weather_data.csv')
 
-# stop the animation and print the time
-minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
-print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
+if __name__ == '__main__':
+    # stop the animation and print the time
+    minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
+    print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
 
-done = True
+    done = True
+    mpg_insights(df)
 
 # %%
