@@ -29,52 +29,45 @@ startTime = datetime.now()
 
 #%%
 '''
-First I will pull the data from moped_mpg_data.csv and car_mpg_data.csv
-and save them as clean_c_data.csv and clean_m_date.csv
+First I will pull the data from car_mpg_data.csv, create new columns
+and save it back to car_mpg_data.csv
 '''
 
-df_m = pd.read_csv('moped_mpg_data.csv')
-df_m.name = 'Moped Data'
-df_c = pd.read_csv('car_mpg_data.csv')
-df_c.name = 'Car Data'
+df = pd.read_csv('car_mpg_data.csv')
+df.name = 'Car Data'
+df = df[['miles', 'dollars', 'gallons',	'date']].copy()
 
-# creating new column for how much a gallon of gas cost for each entry
-for i in [df_m, df_c]:
-    i['gal_cost'] = i.dollars / i.gallons
-    i['mpg'] = i.miles / i.gallons
+# creating gal_cost and mpg
+df['gal_cost'] = df['dollars'] / df['gallons']
+df['mpg'] = df['miles'] / df['gallons']
 
 # creating a new column to determine what percent of my tank was used up when filled up
-# moped tank size = 1.37 gallons
-df_m['tank%_used'] = df_m['gallons'] / 1.37
 # car tank size = 13.55 gallons
-df_c['tank%_used'] = df_c['gallons'] / 13.55
+df['tank%_used'] = df['gallons'] / 13.55
 
 # following method used in for loop
 def as_day(i):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     return days[i]
 
-for i in [df_m, df_c]:
-    # changes column to datetime
-    i['date'] = pd.to_datetime(i['date'])
+# changes column to datetime
+df['date'] = pd.to_datetime(df['date'])
 
-    # creates column with day of the week
-    i['day'] = i['date'].dt.dayofweek
-    i['day'] = i['day'].apply(as_day)
+# creates column with day of the week
+df['day'] = df['date'].dt.dayofweek
+df['day'] = df['day'].apply(as_day)
 
-    # creates a new column that records the number of days since the last fillup
-    i['days_since_last_fillup'] = i['date'].diff().dt.days
+# creates a new column that records the number of days since the last fillup
+df['days_since_last_fillup'] = df['date'].diff().dt.days
 
-    # add column for cost to go one mile
-    i['dollars per mile'] = i['dollars'] / i['miles']
+# add column for cost to go one mile
+df['dollars per mile'] = df['dollars'] / df['miles']
 
 # creates unique id in the form vehicle-date-index of vechicle df
-df_c = df_c.assign(id=('c' + '-' + df_c['date'].dt.strftime("%d-%b-%Y") + "-" + df_c.index.map(str)))
-df_m = df_m.assign(id=('m' + '-' + df_m['date'].dt.strftime("%d-%b-%Y") + "-" + df_m.index.map(str)))
+df = df.assign(id=('c' + '-' + df['date'].dt.strftime("%d-%b-%Y") + "-" + df.index.map(str)))
 
-# creates clean_c_data.csv and clean_m_data.csv
-df_c.to_csv('clean_c_data.csv', index=False)
-df_m.to_csv('clean_m_data.csv', index=False)
+# save back to car_mpg_data.csv
+df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
 '''
