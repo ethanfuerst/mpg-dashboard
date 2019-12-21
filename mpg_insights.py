@@ -1,4 +1,5 @@
 def mpg_insights(df):
+    print()
     print(df.name + ':')
     print("Total miles: " + str(round(sum(df['miles']), 2)) + " miles")
     print("Total spent on gas: $" + str(round(sum(df['dollars']), 2 )))
@@ -6,4 +7,3 @@ def mpg_insights(df):
     print("Miles per gallon: " + str(round(sum(df['miles'])/sum(df['gallons']), 2)))
     print("Average cost of one gallon of gas: $" + str(round(sum(df['dollars'])/sum(df['gallons']), 2)))
     print("Cost to go one mile: $" + str(round(sum(df['dollars'])/sum(df['miles']), 2)))
-    print()

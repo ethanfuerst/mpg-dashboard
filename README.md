@@ -8,11 +8,11 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
-__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date. I'm not doing anything with this currently, but I'm going to keep it in here for now
+__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date. 
 
 __*mpg_refresh.py*__ - adds columns to car_mpg_data.csv and updates weather_data.csv
 
-__*mpg_insights.py*__ - .py file with method that provides insight to mpg when passed a df
+__*mpg_insights.py*__ - .py file with method that provides insight to a mpg df when passed a df
 
 __*carmpg.twb*__ - tableau workbook where I visualize car mpg data and create dashboards
 
@@ -30,5 +30,5 @@ __*mpg_workbook.py*__ - .py file where I work on adding other columns or other t
 
 - [x] delete moped data. I don't use it
 - [ ] spilt tableau dashboard. One for my car and the other for mpg and weather
-- [ ] change the car_mpg_data file instead of making new .csv files
+- [X] change the car_mpg_data file instead of making new .csv files
 - [ ] add 'cost to go one mile' on tableau dashboard and 'avg days between fillups'
