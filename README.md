@@ -4,29 +4,29 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 [Here](https://public.tableau.com/profile/ethan.fuerst#!/vizhome/mpgdatavis/Dashboard) is a link to the Tableau dashboard for this project
 
-**Files in this repository:**
+## Files in this repository:
 
-_*car_mpg_data.csv*_ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
+__*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
-_*moped_mpg_data.csv*_ - .csv that stores miles, dollars and gallons of each moped fill up as well as date. I'm not doing anything with this currently, but I'm going to keep it in here for now
+__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date. I'm not doing anything with this currently, but I'm going to keep it in here for now
 
-_*mpg_refresh.py*_ - adds columns to car_mpg_data.csv and updates weather_data.csv
+__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv and updates weather_data.csv
 
-_*mpg_insights.py*_ - .py file with method that provides insight to mpg when passed a df
+__*mpg_insights.py*__ - .py file with method that provides insight to mpg when passed a df
 
-_*carmpg.twb*_ - tableau workbook where I visualize car mpg data and create dashboards
+__*carmpg.twb*__ - tableau workbook where I visualize car mpg data and create dashboards
 
-_*mpg_vis.py*_ - .py file where I visualize data with matplotlib/seaborn and other python packages
+__*mpg_vis.py*__ - .py file where I visualize data with matplotlib/seaborn and other python packages
 
-_*weather_data.csv*_ - .csv that stores the weather data
+__*weather_data.csv*__ - .csv that stores the weather data
 
-_*car_data.py*_ - .py file that prints out car data mpg_insights
+__*car_data.py*__ - .py file that prints out car data mpg_insights
 
-_*moped_data.py*_ - .py file that prints out moped data mpg_insights
+__*moped_data.py*__ - .py file that prints out moped data mpg_insights
 
-_*mpg_workbook.py*_ - .py file where I work on adding other columns or other things
+__*mpg_workbook.py*__ - .py file where I work on adding other columns or other things
 
-**TODO:**
+## TODO:
 
 - [x] delete moped data. I don't use it
 - [ ] spilt tableau dashboard. One for my car and the other for mpg and weather
