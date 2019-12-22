@@ -20,3 +20,6 @@ Icon[\r]
 
 # Compiled Python files
 *.pyc
+
+# Pycache
+__pycache__
