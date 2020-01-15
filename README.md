@@ -4,7 +4,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 [Here](https://public.tableau.com/profile/ethan.fuerst#!/vizhome/mpgdatavis/Dashboard) is a link to the Tableau dashboard for this project
 
-## Files in this repository:
+## Files in this repository
 
 __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
@@ -26,7 +26,7 @@ __*moped_data.py*__ - .py file that prints out moped data mpg_insights
 
 __*mpg_workbook.py*__ - .py file where I work on adding other columns or other things
 
-## TODO:
+## TODO
 
 - [x] delete moped data. I don't use it
 - [ ] spilt tableau dashboard. One for my car and the other for mpg and weather
