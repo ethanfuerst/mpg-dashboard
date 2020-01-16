@@ -11,14 +11,14 @@ window = 5
 #%%
 if __name__ == '__main__':
     print("Please do not close the window.")
-    print("mpg_extract.py will print how long it took to run when it is completed.")
+    print("mpg_refresh.py will print how long it took to run when it is completed.")
     done = False
     # a nice animation while the program is running
     def animate():
         for c in itertools.cycle(['|', '/', '-', '\\']):
             if done:
                 break
-            sys.stdout.write('\rmpg_extract.py is running ' + c)
+            sys.stdout.write('\rmpg_refresh.py is running ' + c)
             sys.stdout.flush()
             time.sleep(0.1)
         sys.stdout.write('\n')
@@ -202,7 +202,7 @@ df_weather.to_csv('weather_data.csv')
 if __name__ == '__main__':
     # stop the animation and print the time
     minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
-    print("mpg_extract.py ran in {} minutes and {} seconds".format(minutes,seconds))
+    print("mpg_refresh.py ran in {} minutes and {} seconds".format(minutes,seconds))
 
     done = True
     mpg_insights(df)
