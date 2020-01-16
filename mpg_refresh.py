@@ -194,6 +194,9 @@ else:
 
 df_weather['difference'] = df_weather['daily_high'] - df_weather['daily_low']
 df_weather['mov_avg_diff'] = df_weather['high_mov_avg'] - df_weather['low_mov_avg']
+
+df_weather['daily_mid'] = (df_weather['daily_high'] + df_weather['daily_low']) / 2
+df_weather['daily_mid_mov_avg'] = (df_weather['high_mov_avg'] + df_weather['low_mov_avg']) / 2
 #%%
 # and finally ... saving the df_weather to a .csv
 df_weather.reset_index(drop=True, inplace=True)
