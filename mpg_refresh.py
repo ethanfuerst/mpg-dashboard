@@ -164,7 +164,6 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     return df_weather
 
 old_df = pd.read_csv('weather_data.csv')
-old_df.drop('Unnamed: 0', axis=1, inplace=True)
 
 # Get top temp with current window
 sdate = date(2019, 1, 1)
