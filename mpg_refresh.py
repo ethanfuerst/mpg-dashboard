@@ -130,7 +130,7 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     date_list = []
     for i in range(window * -1, delta.days + 1):
         day = sdate + timedelta(days=i)
-        date_list.append(int((day - dt.date(1970,1,1)).total_seconds()))
+        date_list.append(int((day - dt.date(1970,1,1)).total_seconds()) + 43200)
 
     # creating a list for each api call
     api_list = []
@@ -156,7 +156,7 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
         df_weather['low_mov_avg'] = df_weather['daily_low'].rolling(window=window).mean().round(3)
 
     # need to drop the records before the sdate
-    drop_list = [i for i in range(window+1)]
+    drop_list = [i for i in range(window)]
     df_weather = df_weather.drop(drop_list)
     # and then reset the index
     df_weather.reset_index(drop=True, inplace=True)
