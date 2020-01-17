@@ -16,6 +16,8 @@ __*mpg_insights.py*__ - .py file with method that provides insight to a mpg df w
 
 __*carmpg.twb*__ - tableau workbook where I visualize car mpg data and create dashboards
 
+__*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is published to [my Tableau Public profile](https://public.tableau.com/profile/ethan.fuerst#!/)
+
 __*mpg_vis.py*__ - .py file where I visualize data with matplotlib/seaborn and other python packages
 
 __*weather_data.csv*__ - .csv that stores the weather data
