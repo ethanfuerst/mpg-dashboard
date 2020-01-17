@@ -8,7 +8,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
-__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date. 
+__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date
 
 __*mpg_refresh.py*__ - adds columns to car_mpg_data.csv and updates weather_data.csv
 
