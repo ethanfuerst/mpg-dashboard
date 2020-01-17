@@ -2,6 +2,7 @@
 .DS_Store
 .ipynb_checkpoints
 .~carmpg__*
+.~Gas Tank Dashboard*
 
 # .command file that runs mpg_refresh.py
 mpg_update.command
