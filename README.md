@@ -31,6 +31,6 @@ __*mpg_workbook.py*__ - .py file where I work on adding other columns or other t
 ## TODO
 
 - [x] delete moped data. I don't use it
-- [ ] spilt tableau dashboard. One for my car and the other for mpg and weather
+- [x] spilt tableau dashboard. One for my car and the other for mpg and weather
 - [X] change the car_mpg_data file instead of making new .csv files
 - [ ] add 'cost to go one mile' on tableau dashboard and 'avg days between fillups'
