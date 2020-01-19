@@ -87,11 +87,7 @@ Now to get the weather data from https://darksky.net/
 '''
 
 # https://darksky.net/dev/docs requests I keep my key hidden
-# Going back a directory to access darkskyid.txt and save as my_id
-os.chdir("..")
 id = open('darkskyid.txt', 'r').read()
-# Going back to original directory
-os.chdir("/Users/ethanfuerst/Documents/Coding/mpgdata")
 
 def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     '''
@@ -196,11 +192,12 @@ df_weather['mov_avg_diff'] = df_weather['high_mov_avg'] - df_weather['low_mov_av
 
 df_weather['daily_mid'] = (df_weather['daily_high'] + df_weather['daily_low']) / 2
 df_weather['daily_mid_mov_avg'] = (df_weather['high_mov_avg'] + df_weather['low_mov_avg']) / 2
+
+df_weather.reset_index(drop=True, inplace=True)
 #%%
 # and finally ... saving the df_weather to a .csv
-df_weather.reset_index(drop=True, inplace=True)
 df_weather.to_csv('weather_data.csv')
-
+#%%
 if __name__ == '__main__':
     # stop the animation and print the time
     minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
