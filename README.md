@@ -1,4 +1,4 @@
-# mpgdata
+# mpg_data
 
 My mission for this project is to see how my miles per gallon fluctuates over the year and throughout the seasons. Once I have enough data, I'd like to how my miles per gallon changes with the weather in Austin, TX. I'd also like to see how the price of a gallon of gas changes over time.
 
