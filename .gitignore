@@ -24,3 +24,6 @@ Icon[\r]
 
 # Pycache
 __pycache__
+
+# DarkSky ID
+darkskyid.txt
