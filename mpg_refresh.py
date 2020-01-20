@@ -92,7 +92,7 @@ Now to get the weather data from https://darksky.net/
 # https://darksky.net/dev/docs requests I keep my key hidden
 dark_sky_id = open('darkskyid.txt', 'r').read()
 
-def get_weather(lat, long, id, sdate=date.today() - timedelta(days=365), window=1, edate=date.today()):
+def get_weather(lat, long, dark_sky_id, sdate=date.today() - timedelta(days=365), window=1, edate=date.today()):
     '''
     This method returns a dataframe that contains the high temp, low temp, moving average high and moving average low for a range of days.
     The dataframe returned will contain all data from the startdate through the day before the enddate.
@@ -181,7 +181,7 @@ old_df = pd.read_csv('weather_data.csv')
 # Get top temp with current window
 sdate = date(2019, 1, 1)
 edate = date(2019, 1, 1 + window)
-test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window, edate=edate)
+test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window, edate=edate)
 f_temp = test_df['low_mov_avg'].iloc[0].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
@@ -196,12 +196,12 @@ if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
-    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window)
+    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
-    new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window)
+    new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window)
     df_weather = pd.concat([old_df, new_days], sort=False)
 
 df_weather['difference'] = df_weather['daily_high'] - df_weather['daily_low']
