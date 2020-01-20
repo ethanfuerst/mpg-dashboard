@@ -5,6 +5,9 @@ from datetime import date, timedelta, datetime
 import urllib.request, json, os, itertools, threading, time, sys
 from mpg_insights import mpg_insights
 
+class IDNotFoundError(Exception):
+    pass
+
 # This is used for computing the moving average with the weather data
 window = 5
 
@@ -87,9 +90,9 @@ Now to get the weather data from https://darksky.net/
 '''
 
 # https://darksky.net/dev/docs requests I keep my key hidden
-id = open('darkskyid.txt', 'r').read()
+dark_sky_id = open('darkskyid.txt', 'r').read()
 
-def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
+def get_weather(lat, long, id, sdate=date.today() - timedelta(days=365), window=1, edate=date.today()):
     '''
     This method returns a dataframe that contains the high temp, low temp, moving average high and moving average low for a range of days.
     The dataframe returned will contain all data from the startdate through the day before the enddate.
@@ -107,17 +110,31 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
         The ID for darksky API.
         For more info, visit https://darksky.net/
         
-    sdate (datetime.date, required)
+    sdate (datetime.date, default: today - 1 year)
         The startdate of the interval
         Must be a datetime.date object
     
-    window (optional, default is 1)
+    window (integer, default: 1)
         The moving window for the moving average column
     
-    edate (optional, default is date.today())
+    edate (datetime.date, default: today)
         The enddate of the interval
         Must be a datetime.date object
     '''
+
+    if type(sdate) != date or type(edate) != date:
+        raise TypeError("Both sdate and edate must by datetime.date type.")
+    if type(lat) != float or type(long) != float:
+        raise TypeError("Both lat and long must be floats.")
+    if type(window) != int:
+        raise TypeError("The window variable must be an integer.")
+    try:
+        test_api = 'https://api.darksky.net/forecast/' + str(dark_sky_id)+ '/30.266666,-97.73333,1579435200?exclude=flags,hourly'
+        with urllib.request.urlopen(test_api) as url:
+            data = json.loads(url.read().decode())
+    except:
+        raise IDNotFoundError("Not a valid Dark Sky API ID. See https://darksky.net/dev for more information")
+    
     # creating a list for each day in the range
     # using unix time because that's what the darksky api uses
     # each date will give me the unix time at 6pm for that day
@@ -131,7 +148,7 @@ def get_weather(lat, long, id, sdate, window=1, edate=date.today()):
     # creating a list for each api call
     api_list = []
     for i in date_list:
-        api_list.append('https://api.darksky.net/forecast/'+str(id)+'/'+str(lat)+','+str(long)+','+str(i)+'?exclude=flags,hourly')
+        api_list.append('https://api.darksky.net/forecast/'+str(dark_sky_id)+'/'+str(lat)+','+str(long)+','+str(i)+'?exclude=flags,hourly')
 
     # getting the high temp and low temp for each day
     dates = []
@@ -164,7 +181,7 @@ old_df = pd.read_csv('weather_data.csv')
 # Get top temp with current window
 sdate = date(2019, 1, 1)
 edate = date(2019, 1, 1 + window)
-test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window, edate=edate)
+test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window, edate=edate)
 f_temp = test_df['low_mov_avg'].iloc[0].round(3)
 
 # If the last date in the df is the same as the yesterday then we are good to go
@@ -179,12 +196,12 @@ if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date
 elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
     # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
     # window is defined around line 8
-    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=id, window=window)
+    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window)
 # Lastly, if the top temp is the same then we can just add the days that we have been missing
 else:
     l_date = old_df['date'].iloc[-1].split('/')
     sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
-    new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=id, window=window)
+    new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, id=dark_sky_id, window=window)
     df_weather = pd.concat([old_df, new_days], sort=False)
 
 df_weather['difference'] = df_weather['daily_high'] - df_weather['daily_low']
