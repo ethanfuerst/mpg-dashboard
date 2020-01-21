@@ -84,7 +84,7 @@ df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
 '''
-Now to get the weather data from https://darksky.net/
+Now to get the weather data using get_weather()
 '''
 
 # https://darksky.net/dev/docs requests I keep my key hidden
@@ -125,6 +125,38 @@ df_weather['daily_mid'] = (df_weather['daily_high'] + df_weather['daily_low']) /
 df_weather['daily_mid_mov_avg'] = (df_weather['high_mov_avg'] + df_weather['low_mov_avg']) / 2
 
 df_weather.reset_index(drop=True, inplace=True)
+
+#%%
+'''
+I want to create a dashboard of insights as well
+Total miles
+total spent on gas
+total gallons
+mpg
+avg cost of 1 gallon
+cost to go one mile
+
+List of time periods:
+last fillup
+last month
+last 3 months
+last 6 months
+last year
+all time
+'''
+
+insights = []
+labels = ['Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost', 'Cost to go one mile']
+# for i in time_periods
+    # df_time = df fileterd by time periods
+df_time = df.copy()
+insight_row = [round(sum(df_time['miles']), 2), round(sum(df_time['dollars']), 2 ), round(sum(df_time['gallons']), 2)]
+insight_row.append(round(sum(df_time['miles']) / sum(df_time['gallons']), 2))
+insight_row.append(round(sum(df_time['dollars'])/sum(df_time['gallons']), 2))
+insight_row.append(round(sum(df_time['dollars'])/sum(df_time['miles']), 2))
+insights.append(insight_row)
+
+
 #%%
 # and finally ... saving the df_weather to a .csv
 df_weather.to_csv('weather_data.csv')

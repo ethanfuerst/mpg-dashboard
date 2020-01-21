@@ -33,9 +33,9 @@ __*mpg_workbook.py*__ - .py file where I work on adding other columns or other t
 - [x] delete moped data. I don't use it
 - [x] spilt tableau dashboard. One for my car and the other for mpg and weather
 - [X] change the car_mpg_data file instead of making new .csv files
+- [x] fix get_weather
+  - [x] add to own repository
 - [ ] add 'cost to go one mile' on tableau dashboard and 'avg days between fillups'
   - [ ] create df with one row, column names are insights and the values are the numbers. Add as table to dashboard
   - [ ] create extra row as 'in last month', one for 'in last year', etc.
-- [x] fix get_weather
-  - [ ] figure out how to reference python files in other directories without changing directory
-  - [x] add to own repository
+- [ ] clean up mpg_data_creator()
