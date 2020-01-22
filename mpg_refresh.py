@@ -2,6 +2,7 @@
 import pandas as pd
 import datetime as dt
 from datetime import date, timedelta, datetime
+from dateutil.relativedelta import relativedelta
 from weather_data import get_weather
 import urllib.request, json, os, itertools, threading, time, sys
 from mpg_insights import mpg_insights
@@ -47,6 +48,9 @@ def mpg_data_creator(df):
     gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile
     '''
     df = df[['miles', 'dollars', 'gallons', 'date']].copy()
+    df['miles'] = df['miles'].astype(float)
+    df['dollars'] = df['dollars'].astype(float)
+    df['gallons'] = df['gallons'].astype(float)
 
     # creating gal_cost and mpg
     df['gal_cost'] = df['dollars'] / df['gallons']
@@ -62,7 +66,7 @@ def mpg_data_creator(df):
         return days[i]
 
     # changes column to datetime
-    df['date'] = pd.to_datetime(df['date'])
+    df['date'] = pd.to_datetime(df['date'].astype(str))
 
     # creates column with day of the week
     df['weekday'] = df['date'].dt.dayofweek
@@ -128,34 +132,30 @@ df_weather.reset_index(drop=True, inplace=True)
 
 #%%
 '''
-I want to create a dashboard of insights as well
-Total miles
-total spent on gas
-total gallons
-mpg
-avg cost of 1 gallon
-cost to go one mile
-
-List of time periods:
-last fillup
-last month
-last 3 months
-last 6 months
-last year
-all time
+Create a .csv for a dashboard of insights
 '''
 
-insights = []
-labels = ['Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost', 'Cost to go one mile']
-# for i in time_periods
-    # df_time = df fileterd by time periods
-df_time = df.copy()
-insight_row = [round(sum(df_time['miles']), 2), round(sum(df_time['dollars']), 2 ), round(sum(df_time['gallons']), 2)]
-insight_row.append(round(sum(df_time['miles']) / sum(df_time['gallons']), 2))
-insight_row.append(round(sum(df_time['dollars'])/sum(df_time['gallons']), 2))
-insight_row.append(round(sum(df_time['dollars'])/sum(df_time['miles']), 2))
-insights.append(insight_row)
+last_fillup = df.tail(1).copy()
+last_month = df[df['date'] > (date.today() - relativedelta(months=1))].copy()
+last_3 = df[df['date'] > (date.today() - relativedelta(months=3))].copy()
+last_6 = df[df['date'] > (date.today() - relativedelta(months=6))].copy()
+last_year = df[df['date'] > (date.today() - relativedelta(years=1))].copy()
+all_time = df.copy()
 
+time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
+
+insights = []
+labels = ['Time period', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost', 'Cost to go one mile']
+for key, value in time_periods.items():
+    insight_row = [key, sum(value['miles']), sum(value['dollars']), sum(value['gallons'])]
+    insight_row.append(sum(value['miles']) / sum(value['gallons']))
+    insight_row.append(sum(value['dollars']) / sum(value['gallons']))
+    insight_row.append(sum(value['dollars']) / sum(value['miles']))
+    insights.append(insight_row)
+    insight_row = []
+
+df_insights = pd.DataFrame(insights, columns=labels)
+df_insights.to_csv('mpg_insights.csv', index=False)
 
 #%%
 # and finally ... saving the df_weather to a .csv
