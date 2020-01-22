@@ -136,10 +136,10 @@ Create a .csv for a dashboard of insights
 '''
 
 last_fillup = df.tail(1).copy()
-last_month = df[df['date'] > (date.today() - relativedelta(months=1))].copy()
-last_3 = df[df['date'] > (date.today() - relativedelta(months=3))].copy()
-last_6 = df[df['date'] > (date.today() - relativedelta(months=6))].copy()
-last_year = df[df['date'] > (date.today() - relativedelta(years=1))].copy()
+last_month = df[df['date'] >= (date.today() - relativedelta(months=1))].copy()
+last_3 = df[df['date'] >= (date.today() - relativedelta(months=3))].copy()
+last_6 = df[df['date'] >= (date.today() - relativedelta(months=6))].copy()
+last_year = df[df['date'] >= (date.today() - relativedelta(years=1))].copy()
 all_time = df.copy()
 
 time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
