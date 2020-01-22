@@ -35,7 +35,7 @@ __*mpg_workbook.py*__ - .py file where I work on adding other columns or other t
 - [X] change the car_mpg_data file instead of making new .csv files
 - [x] fix get_weather
   - [x] add to own repository
-- [ ] add 'cost to go one mile' on tableau dashboard and 'avg days between fillups'
-  - [ ] create df with one row, column names are insights and the values are the numbers. Add as table to dashboard
-  - [ ] create extra row as 'in last month', one for 'in last year', etc.
+- [x] add 'cost to go one mile' on tableau dashboard
+  - [x] create df with one row, column names are insights and the values are the numbers. Add as table to dashboard
+  - [x] create extra rows like 'in last month', one for 'in last year', etc.
 - [ ] clean up mpg_data_creator()
