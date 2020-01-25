@@ -45,3 +45,4 @@ __*weather_data.py*__ - .py file that keeps my get_weather() method
   - [x] create df with one row, column names are insights and the values are the numbers. Add as table to dashboard
   - [x] create extra rows like 'in last month', one for 'in last year', etc.
 - [ ] clean up mpg_data_creator()
+- [ ] sync two line graphs in tableau dashboard
