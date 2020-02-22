@@ -46,3 +46,8 @@ __*weather_data.py*__ - .py file that keeps my get_weather() method
   - [x] create extra rows like 'in last month', one for 'in last year', etc.
 - [ ] clean up mpg_data_creator()
 - [ ] sync two line graphs in tableau dashboard
+- [ ] figure out a way to make car_mpg.py run faster
+- [ ] refresh tableau extracts from .py file?
+
+## NOTE
+Add .7 miles to next fillup after 2/22/20
