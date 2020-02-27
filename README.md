@@ -48,6 +48,8 @@ __*weather_data.py*__ - .py file that keeps my get_weather() method
 - [ ] sync two line graphs in tableau dashboard
 - [ ] figure out a way to make car_mpg.py run faster
 - [ ] refresh tableau extracts from .py file?
+- [ ] fix roundign error when saving df to .csvs
 
 ## NOTE
-Add .7 miles to next fillup after 2/22/20
+
+Add .7 miles to next car fillup after 2/22/20
