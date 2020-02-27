@@ -3,10 +3,9 @@ from IPython import get_ipython
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime as dt
-get_ipython().run_line_magic('matplotlib', 'inline')
 
- = pd.read_csv('clean_c_data.csv')
-.name = 'Car Data'
+df = pd.read_csv('clean_c_data.csv')
+df.name = 'Car Data'
 
 
 # %%
