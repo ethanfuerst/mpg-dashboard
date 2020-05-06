@@ -44,12 +44,12 @@ __*weather_data.py*__ - .py file that keeps my get_weather() method
 - [x] add 'cost to go one mile' on tableau dashboard
   - [x] create df with one row, column names are insights and the values are the numbers. Add as table to dashboard
   - [x] create extra rows like 'in last month', one for 'in last year', etc.
-- [ ] clean up mpg_data_creator()
-- [ ] sync two line graphs in tableau dashboard
-- [ ] figure out a way to make car_mpg.py run faster
-- [ ] refresh tableau extracts from .py file?
-- [ ] fix roundign error when saving df to .csvs
-
-## NOTE
-
-Add .7 miles to next car fillup after 2/22/20
+- [x] remove weather data
+- [x] clean up mpg_refresh.py
+  - [x] clean up mpg_data_creator()
+- [ ] remake tableau dashboard in plotly in mpg_vis.py
+  - [ ] sync two line graphs in tableau dashboard in plotly
+  - [ ] figure out how to host vizs on blog using plotly graphs
+    - [ ] sql server?
+- [ ] bring weather back in
+  - [ ] find new API for weather
