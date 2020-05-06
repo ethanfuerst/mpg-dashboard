@@ -12,7 +12,7 @@ df.name = 'Car Data'
 # Looking to see how cost of a gallon changes over time
 
 plt.figure(figsize=(20,10))
-plt.plot(['date'], ['gal_cost'], 'r')
+plt.plot(df['date'], df['gal_cost'], 'r')
 plt.xlabel('Date')
 plt.ylabel('Gallons')
 plt.title('Gallon cost vs. Time')
@@ -24,7 +24,7 @@ plt.show()
 # Need to group by months
 
 plt.figure(figsize=(20,10))
-plt.plot(['date'], ['mpg'].rolling(window=3).mean(), 'b')
+plt.plot(df['date'], df['mpg'].rolling(window=3).mean(), 'b')
 plt.xlabel('Date')
 plt.ylabel('Miles per gallon')
 plt.title('Moving average of mpg vs. time')
@@ -36,7 +36,7 @@ plt.show()
 # Need to group by months
 
 plt.figure(figsize=(20,10))
-plt.plot(['date'], ['gal_cost'].rolling(window=3).mean(), 'g')
+plt.plot(df['date'], df['gal_cost'].rolling(window=3).mean(), 'g')
 plt.xlabel('Date')
 plt.ylabel('Miles per gallon')
 plt.title('Moving average of mpg vs. time')
