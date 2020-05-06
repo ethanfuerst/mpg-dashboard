@@ -52,6 +52,7 @@ def mpg_data_creator(df):
 df = mpg_data_creator(df)
 
 # save back to car_mpg_data.csv
+df.name = '2017 Jeep Patriot Miles Per Gallon Data'
 df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
