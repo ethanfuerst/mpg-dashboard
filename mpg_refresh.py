@@ -5,30 +5,6 @@ from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import urllib.request, json, os, itertools, threading, time, sys
 
-# This is used for computing the moving average with the weather data
-window = 5
-
-#%%
-if __name__ == '__main__':
-    print("Please do not close the window.")
-    print("mpg_refresh.py will print how long it took to run when it is completed.")
-    done = False
-    # a nice animation while the program is running
-    def animate():
-        for c in itertools.cycle(['|', '/', '-', '\\']):
-            if done:
-                break
-            sys.stdout.write('\rmpg_refresh.py is running ' + c)
-            sys.stdout.flush()
-            time.sleep(0.1)
-        sys.stdout.write('\n')
-
-    t = threading.Thread(target=animate)
-    t.start()
-
-# lets see how long this takes
-startTime = datetime.now()
-
 #%%
 '''
 First I will pull the data from car_mpg_data.csv, create new columns
@@ -126,12 +102,6 @@ def mpg_insights(df):
     print("Cost to go one mile: $" + str(round(sum(df['dollars'])/sum(df['miles']), 2)))
 
 #%%
-if __name__ == '__main__':
-    # stop the animation and print the time
-    minutes, seconds = divmod((datetime.now() - startTime).seconds,60)
-    print("mpg_refresh.py ran in {} minutes and {} seconds".format(minutes,seconds))
-
-    done = True
-    mpg_insights(df)
+mpg_insights(df)
 
 # %%
