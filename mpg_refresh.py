@@ -31,20 +31,15 @@ def mpg_data_creator(df):
     df['mpg'] = df['miles'] / df['gallons']
 
     # creating a new column to determine what percent of my tank was used up when filled up
-    # car tank size = 13.55 gallons
+    # 2017 Jeep Patriot tank size = 13.55 gallons
     df['tank%_used'] = df['gallons'] / 13.55
-
-    # following method used in for loop
-    def as_day(i):
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        return days[i]
 
     # changes column to datetime
     df['date'] = pd.to_datetime(df['date'].astype(str))
 
     # creates column with day of the week
-    df['weekday'] = df['date'].dt.dayofweek
-    df['weekday'] = df['weekday'].apply(as_day)
+    df['weekday'] = df['date'].dt.dayofweek.apply(lambda x: ['Monday', 'Tuesday', 'Wednesday', 
+                                                    'Thursday', 'Friday', 'Saturday', 'Sunday'][x])
 
     # creates a new column that records the number of days since the last fillup
     df['days_since_last_fillup'] = df['date'].diff().dt.days
@@ -55,7 +50,6 @@ def mpg_data_creator(df):
     return df
 
 df = mpg_data_creator(df)
-df.name = 'Car data'
 
 # save back to car_mpg_data.csv
 df.to_csv('car_mpg_data.csv', index=False)
@@ -74,17 +68,19 @@ all_time = df.copy()
 
 time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
 
-insights = []
-labels = ['Time period', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost', 'Cost to go one mile']
-for key, value in time_periods.items():
-    insight_row = [key, sum(value['miles']), sum(value['dollars']), sum(value['gallons'])]
-    insight_row.append(sum(value['miles']) / sum(value['gallons']))
-    insight_row.append(sum(value['dollars']) / sum(value['gallons']))
-    insight_row.append(sum(value['dollars']) / sum(value['miles']))
-    insights.append(insight_row)
-    insight_row = []
+df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
+                                    'MPG', 'Avg gallon cost', 'Cost to go one mile'])
 
-df_insights = pd.DataFrame(insights, columns=labels)
+for i in range(len(time_periods)):
+    value = list(time_periods.values())[i]
+    df_insights.loc[i] = [list(time_periods.keys())[i], 
+                            sum(value['miles']), 
+                            sum(value['dollars']), 
+                            sum(value['gallons']), 
+                            sum(value['miles']) / sum(value['gallons']), 
+                            sum(value['dollars']) / sum(value['gallons']), 
+                            sum(value['dollars']) / sum(value['miles'])]
+
 df_insights.to_csv('mpg_insights.csv', index=False)
 
 #%%
