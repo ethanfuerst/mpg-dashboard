@@ -5,7 +5,6 @@ from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from weather_data import get_weather
 import urllib.request, json, os, itertools, threading, time, sys
-from mpg_insights import mpg_insights
 
 # This is used for computing the moving average with the weather data
 window = 5
@@ -160,6 +159,21 @@ df_insights.to_csv('mpg_insights.csv', index=False)
 #%%
 # and finally ... saving the df_weather to a .csv
 df_weather.to_csv('weather_data.csv')
+
+#%%
+def mpg_insights(df):
+    '''
+    Print insights
+    '''
+    print()
+    print(df.name + ':')
+    print("Total miles: " + str(round(sum(df['miles']), 2)) + " miles")
+    print("Total spent on gas: $" + str(round(sum(df['dollars']), 2 )))
+    print("Total gallons pumped: " + str(round(sum(df['gallons']), 2)) + " gallons")
+    print("Miles per gallon: " + str(round(sum(df['miles'])/sum(df['gallons']), 2)))
+    print("Average cost of one gallon of gas: $" + str(round(sum(df['dollars'])/sum(df['gallons']), 2)))
+    print("Cost to go one mile: $" + str(round(sum(df['dollars'])/sum(df['miles']), 2)))
+
 #%%
 if __name__ == '__main__':
     # stop the animation and print the time
