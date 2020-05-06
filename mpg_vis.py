@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime as dt
 
-df = pd.read_csv('clean_c_data.csv')
+df = pd.read_csv('car_mpg_data.csv')
 df.name = 'Car Data'
 
 
@@ -39,7 +39,7 @@ plt.figure(figsize=(20,10))
 plt.plot(df['date'], df['gal_cost'].rolling(window=3).mean(), 'g')
 plt.xlabel('Date')
 plt.ylabel('Miles per gallon')
-plt.title('Moving average of mpg vs. time')
+plt.title('Moving average of cost of a gallon vs. time')
 plt.show()
 
 
