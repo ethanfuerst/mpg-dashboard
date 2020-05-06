@@ -3,7 +3,6 @@ import pandas as pd
 import datetime as dt
 from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
-from weather_data import get_weather
 import urllib.request, json, os, itertools, threading, time, sys
 
 # This is used for computing the moving average with the weather data
@@ -87,50 +86,6 @@ df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
 '''
-Now to get the weather data using get_weather()
-'''
-
-# https://darksky.net/dev/docs requests I keep my key hidden
-dark_sky_id = open('darkskyid.txt', 'r').read()
-
-old_df = pd.read_csv('weather_data.csv')
-
-# Get top temp with current window
-sdate = date(2019, 1, 1)
-edate = date(2019, 1, 1 + window)
-test_df = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window, edate=edate)
-f_temp = test_df['low_mov_avg'].iloc[0].round(3)
-
-# If the last date in the df is the same as the yesterday then we are good to go
-date_array = old_df['date'].iloc[-1].split('/')
-old_df_today = date(int(date_array[0]), int(date_array[1]), int(date_array[2]))
-# If the top temp (jan 1) from the small df is the same as the old df
-# and todays date is the same as the most recent date on the old df
-# then we set df_weather to old_df. Nothing changed.
-if (f_temp == old_df['low_mov_avg'].iloc[0].round(3)) and (old_df_today == (date.today() - timedelta(1))):
-    df_weather = old_df
-# If the top temp is different, i.e. the moving average changed, we have to recompute everything
-elif  f_temp != old_df['low_mov_avg'].iloc[0].round(3):
-    # I'm using a moving average that changes, so doing this I will have data Jan 1 2019
-    # window is defined around line 8
-    df_weather = get_weather(sdate=date(2019, 1, 1), lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window)
-# Lastly, if the top temp is the same then we can just add the days that we have been missing
-else:
-    l_date = old_df['date'].iloc[-1].split('/')
-    sdate = date(int(l_date[0]), int(l_date[1]), int(l_date[2])) + timedelta(1)   # last date + one day
-    new_days = get_weather(sdate=sdate, lat=30.267153, long=-97.7430608, dark_sky_id=dark_sky_id, window=window)
-    df_weather = pd.concat([old_df, new_days], sort=False)
-
-df_weather['difference'] = df_weather['daily_high'] - df_weather['daily_low']
-df_weather['mov_avg_diff'] = df_weather['high_mov_avg'] - df_weather['low_mov_avg']
-
-df_weather['daily_mid'] = (df_weather['daily_high'] + df_weather['daily_low']) / 2
-df_weather['daily_mid_mov_avg'] = (df_weather['high_mov_avg'] + df_weather['low_mov_avg']) / 2
-
-df_weather.reset_index(drop=True, inplace=True)
-
-#%%
-'''
 Create a .csv for a dashboard of insights
 '''
 
@@ -155,10 +110,6 @@ for key, value in time_periods.items():
 
 df_insights = pd.DataFrame(insights, columns=labels)
 df_insights.to_csv('mpg_insights.csv', index=False)
-
-#%%
-# and finally ... saving the df_weather to a .csv
-df_weather.to_csv('weather_data.csv')
 
 #%%
 def mpg_insights(df):
