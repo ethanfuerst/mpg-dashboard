@@ -27,12 +27,12 @@ def mpg_data_creator(df):
     df['gallons'] = df['gallons'].astype(float)
 
     # creating gal_cost and mpg
-    df['gal_cost'] = df['dollars'] / df['gallons']
-    df['mpg'] = df['miles'] / df['gallons']
+    df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
+    df['mpg'] = round(df['miles'] / df['gallons'], 3)
 
     # creating a new column to determine what percent of my tank was used up when filled up
     # 2017 Jeep Patriot tank size = 13.55 gallons
-    df['tank%_used'] = df['gallons'] / 13.55
+    df['tank%_used'] = round(df['gallons'] / 13.55, 4)
 
     # changes column to datetime
     df['date'] = pd.to_datetime(df['date'].astype(str))
@@ -45,7 +45,7 @@ def mpg_data_creator(df):
     df['days_since_last_fillup'] = df['date'].diff().dt.days
 
     # add column for cost to go one mile
-    df['dollars per mile'] = df['dollars'] / df['miles']
+    df['dollars per mile'] = round(df['dollars'] / df['miles'], 4)
 
     return df
 
@@ -79,7 +79,7 @@ for i in range(len(time_periods)):
                             round(sum(value['dollars']),3), 
                             round(sum(value['gallons']),3), 
                             round(sum(value['miles']) / sum(value['gallons']),3), 
-                            round(sum(value['dollars']) / sum(value['gallons']),3), 
+                            round(sum(value['dollars']) / sum(value['gallons']),2), 
                             round(sum(value['dollars']) / sum(value['miles']),3) * 100]
 
 df_insights.to_csv('mpg_insights.csv', index=False)
