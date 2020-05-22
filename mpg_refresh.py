@@ -70,17 +70,17 @@ all_time = df.copy()
 time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
 
 df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
-                                    'MPG', 'Avg gallon cost', 'Cost to go one mile'])
+                                    'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)'])
 
 for i in range(len(time_periods)):
     value = list(time_periods.values())[i]
     df_insights.loc[i] = [list(time_periods.keys())[i], 
-                            sum(value['miles']), 
-                            sum(value['dollars']), 
-                            sum(value['gallons']), 
-                            sum(value['miles']) / sum(value['gallons']), 
-                            sum(value['dollars']) / sum(value['gallons']), 
-                            sum(value['dollars']) / sum(value['miles'])]
+                            round(sum(value['miles']),3), 
+                            round(sum(value['dollars']),3), 
+                            round(sum(value['gallons']),3), 
+                            round(sum(value['miles']) / sum(value['gallons']),3), 
+                            round(sum(value['dollars']) / sum(value['gallons']),3), 
+                            round(sum(value['dollars']) / sum(value['miles']),3) * 100]
 
 df_insights.to_csv('mpg_insights.csv', index=False)
 
@@ -96,7 +96,7 @@ def mpg_insights(df):
     print("Total gallons pumped: " + str(round(sum(df['gallons']), 2)) + " gallons")
     print("Miles per gallon: " + str(round(sum(df['miles'])/sum(df['gallons']), 2)))
     print("Average cost of one gallon of gas: $" + str(round(sum(df['dollars'])/sum(df['gallons']), 2)))
-    print("Cost to go one mile: $" + str(round(sum(df['dollars'])/sum(df['miles']), 2)))
+    print("Cost to go one mile: " + str(round(sum(df['dollars'])/sum(df['miles']), 3) * 100) + " cents")
 
 #%%
 mpg_insights(df)
