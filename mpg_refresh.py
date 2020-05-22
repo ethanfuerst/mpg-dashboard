@@ -22,9 +22,9 @@ def mpg_data_creator(df):
     gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile
     '''
     df = df[['miles', 'dollars', 'gallons', 'date']].copy()
-    df['miles'] = df['miles'].astype(float)
-    df['dollars'] = df['dollars'].astype(float)
-    df['gallons'] = df['gallons'].astype(float)
+    df['miles'] = round(df['miles'].astype(float), 1)
+    df['dollars'] = round(df['dollars'].astype(float), 2)
+    df['gallons'] = round(df['gallons'].astype(float), 3)
 
     # creating gal_cost and mpg
     df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
