@@ -6,33 +6,20 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 ## Files in this repository
 
-__*car_data.py*__ - .py file that prints out car data mpg_insights
-
 __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
 __*carmpg.twb*__ - tableau workbook where I visualize car mpg data and create dashboards
 
 __*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is published to [my Tableau Public profile](https://public.tableau.com/profile/ethan.fuerst#!/)
 
-__*LICENSE*__ - the license for this repository
+__*mpg_insights.csv*__ - .csv that stores my mpg data
 
-__*moped_data.py*__ - .py file that prints out moped data mpg_insights
+__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv
 
-__*moped_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each moped fill up as well as date
+__*mpg_vis.ipynb*__ - jupyter notebook file where I visualize data with matplotlib/plotly
 
-__*mpg_insights.csv*__ - .csv that stores my mpg insights
+__*mpg_workbook.py*__ - jupyter notebook file where I work on adding other columns or other things
 
-__*mpg_insights.py*__ - .py file with method that provides insight to a mpg df when passed a df
-
-__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv and updates weather_data.csv
-
-__*mpg_vis.py*__ - .py file where I visualize data with matplotlib/seaborn and other python packages
-
-__*mpg_workbook.py*__ - .py file where I work on adding other columns or other things
-
-__*weather_data.csv*__ - .csv that stores the weather data
-
-__*weather_data.py*__ - .py file that keeps my get_weather() method
 
 ## TODO
 
@@ -47,7 +34,8 @@ __*weather_data.py*__ - .py file that keeps my get_weather() method
 - [x] remove weather data
 - [x] clean up mpg_refresh.py
   - [x] clean up mpg_data_creator()
-- [ ] remake tableau dashboard in plotly in mpg_vis.py
+- [x] change .py files to .ipynb
+- [ ] remake tableau dashboard in plotly in mpg_vis.ipynb
   - [ ] sync two line graphs in tableau dashboard in plotly
   - [ ] figure out how to host vizs on blog using plotly graphs
     - [ ] sql server?
