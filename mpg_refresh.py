@@ -59,28 +59,36 @@ df.to_csv('car_mpg_data.csv', index=False)
 '''
 Create a .csv for a dashboard of insights
 '''
+def insight_creator(df):
+    '''
+    When passed a df after going through mpg_data_creator,
+    this method will return a df that will provide insights on the data in different time frames
+    '''
+    last_fillup = df.tail(1).copy()
+    last_month = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=1))].copy()
+    last_3 = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=3))].copy()
+    last_6 = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=6))].copy()
+    last_year = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(years=1))].copy()
+    all_time = df.copy()
 
-last_fillup = df.tail(1).copy()
-last_month = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=1))].copy()
-last_3 = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=3))].copy()
-last_6 = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=6))].copy()
-last_year = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(years=1))].copy()
-all_time = df.copy()
+    time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
 
-time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
+    df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
+                                        'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)'])
 
-df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
-                                    'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)'])
+    for i in range(len(time_periods)):
+        value = list(time_periods.values())[i]
+        df_insights.loc[i] = [list(time_periods.keys())[i], 
+                                round(sum(value['miles']),3), 
+                                round(sum(value['dollars']),3), 
+                                round(sum(value['gallons']),3), 
+                                round(sum(value['miles']) / sum(value['gallons']),3), 
+                                round(sum(value['dollars']) / sum(value['gallons']),2), 
+                                round(sum(value['dollars']) / sum(value['miles']),3) * 100]
+    
+    return df_insights
 
-for i in range(len(time_periods)):
-    value = list(time_periods.values())[i]
-    df_insights.loc[i] = [list(time_periods.keys())[i], 
-                            round(sum(value['miles']),3), 
-                            round(sum(value['dollars']),3), 
-                            round(sum(value['gallons']),3), 
-                            round(sum(value['miles']) / sum(value['gallons']),3), 
-                            round(sum(value['dollars']) / sum(value['gallons']),2), 
-                            round(sum(value['dollars']) / sum(value['miles']),3) * 100]
+df_insights = insight_creator(df)
 
 df_insights.to_csv('mpg_insights.csv', index=False)
 
