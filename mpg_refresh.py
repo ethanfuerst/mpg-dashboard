@@ -84,7 +84,7 @@ def insight_creator(df):
                                 round(sum(value['gallons']),3), 
                                 round(sum(value['miles']) / sum(value['gallons']),3), 
                                 round(sum(value['dollars']) / sum(value['gallons']),2), 
-                                round(sum(value['dollars']) / sum(value['miles']),3) * 100]
+                                round(sum(value['dollars']) / sum(value['miles']) * 100 ,1)]
     
     return df_insights
 
@@ -104,9 +104,10 @@ def mpg_insights(df):
     print("Total gallons pumped: " + str(round(sum(df['gallons']), 2)) + " gallons")
     print("Miles per gallon: " + str(round(sum(df['miles'])/sum(df['gallons']), 2)))
     print("Average cost of one gallon of gas: $" + str(round(sum(df['dollars'])/sum(df['gallons']), 2)))
-    print("Cost to go one mile: " + str(round(sum(df['dollars'])/sum(df['miles']), 3) * 100) + " cents")
+    print("Cost to go one mile: " + str(round(sum(df['dollars'])/sum(df['miles']) * 100, 3)) + " cents")
 
 #%%
-mpg_insights(df)
+if __name__ == '__main__':
+    mpg_insights(df)
 
 # %%
