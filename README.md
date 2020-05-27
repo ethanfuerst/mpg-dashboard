@@ -20,7 +20,6 @@ __*mpg_vis.ipynb*__ - jupyter notebook file where I visualize data with matplotl
 
 __*mpg_workbook.py*__ - jupyter notebook file where I work on adding other columns or other things
 
-
 ## TODO
 
 - [x] delete moped data. I don't use it
