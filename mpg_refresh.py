@@ -26,10 +26,9 @@ def mpg_data_creator(df):
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
 
-    # creating gal_cost, gal_cost_format and mpg
+    # creating gal_cost and mpg
     df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
-    df['gal_cost_format'] = df['gal_cost'].apply(lambda x: '{:.2f}'.format(x))
-    df['mpg'] = round(df['miles'] / df['gallons'], 3)
+    df['mpg'] = round(df['miles'] / df['gallons'], 2)
 
     # creating a new column to determine what percent of my tank was used up when filled up
     # 2017 Jeep Patriot tank size = 13.55 gallons
