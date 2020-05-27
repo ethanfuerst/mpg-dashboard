@@ -26,8 +26,9 @@ def mpg_data_creator(df):
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
 
-    # creating gal_cost and mpg
+    # creating gal_cost, gal_cost_format and mpg
     df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
+    df['gal_cost_format'] = df['gal_cost'].apply(lambda x: x.replace('$', '').replace(',', '') if isinstance(x, str) else x).astype(float)
     df['mpg'] = round(df['miles'] / df['gallons'], 3)
 
     # creating a new column to determine what percent of my tank was used up when filled up
