@@ -35,8 +35,8 @@ __*mpg_workbook.py*__ - jupyter notebook file where I work on adding other colum
   - [x] clean up mpg_data_creator()
 - [x] change .py files to .ipynb
 - [ ] remake tableau dashboard in plotly in mpg_vis.ipynb
-  - [ ] sync two line graphs in tableau dashboard in plotly
-  - [ ] figure out how to host vizs on blog using plotly graphs
-    - [ ] sql server?
+  - [x] sync two line graphs in tableau dashboard in plotly
+  - [x] figure out how to host vizs on blog using plotly graphs
+  - [ ] display last x days automatically, can zoom out for more
 - [ ] bring weather back in
   - [ ] find new API for weather
