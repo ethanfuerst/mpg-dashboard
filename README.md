@@ -16,9 +16,9 @@ __*mpg_insights.csv*__ - .csv that stores my mpg data
 
 __*mpg_refresh.py*__ - adds columns to car_mpg_data.csv
 
-__*mpg_vis.ipynb*__ - jupyter notebook file where I visualize data with matplotlib/plotly
+__*mpg_vis.ipynb*__ - jupyter notebook where I visualize data with matplotlib/plotly
 
-__*mpg_workbook.py*__ - jupyter notebook file where I work on adding other columns or other things
+__*mpg_workbook.py*__ - jupyter notebook where I work on adding other columns or other things
 
 ## TODO
 
