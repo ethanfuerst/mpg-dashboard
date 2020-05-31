@@ -6,19 +6,27 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 ## Files in this repository
 
+### .csvs
+
 __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
 
-__*carmpg.twb*__ - tableau workbook where I visualize car mpg data and create dashboards
+__*mpg_insights.csv*__ - .csv that stores insights about my mpg data
 
-__*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is published to [my Tableau Public profile](https://public.tableau.com/profile/ethan.fuerst#!/)
+### Jupyter notebooks
 
-__*mpg_insights.csv*__ - .csv that stores my mpg data
+__*mpg_vis.ipynb*__ - mpg data visualized with plotly/matplotlib
 
-__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv
+__*mpg_workbook.ipynb*__ - mpg data workstation
 
-__*mpg_vis.ipynb*__ - jupyter notebook where I visualize data with matplotlib/plotly
+### Python files
 
-__*mpg_workbook.py*__ - jupyter notebook where I work on adding other columns or other things
+__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv. run after new mpg data is recorded.
+
+### Tableau files
+
+__*carmpg.twb*__ - dashboards and various vizs for data
+
+__*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is published to [my Tableau Public profile](https://public.tableau.com/profile/ethan.fuerst/)
 
 ## TODO
 
@@ -39,5 +47,6 @@ __*mpg_workbook.py*__ - jupyter notebook where I work on adding other columns or
   - [x] figure out how to host vizs on blog using plotly graphs
   - [ ] figure out why .ipynb files are not showing plotly figures
   - [ ] display last x days automatically, can zoom out for more
+- [ ] make mpg_insight plotly table
 - [ ] bring weather back in
   - [ ] find new API for weather
