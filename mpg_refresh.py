@@ -6,10 +6,9 @@ from dateutil.relativedelta import relativedelta
 import urllib.request, json, os, itertools, threading, time, sys
 
 #%%
-'''
-First I will pull the data from car_mpg_data.csv, create new columns
-and save it back to car_mpg_data.csv
-'''
+
+# - First I will pull the data from car_mpg_data.csv, create new columns
+# - and save it back to car_mpg_data.csv
 
 df = pd.read_csv('car_mpg_data.csv')
 df.name = 'Car Data'
@@ -26,39 +25,38 @@ def mpg_data_creator(df):
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
 
-    # creating gal_cost and mpg
+    # - creating gal_cost and mpg
     df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
     df['mpg'] = round(df['miles'] / df['gallons'], 2)
 
-    # creating a new column to determine what percent of my tank was used up when filled up
-    # 2017 Jeep Patriot tank size = 13.55 gallons
+    # - creating a new column to determine what percent of my tank was used up when filled up
+    # - 2017 Jeep Patriot tank size = 13.55 gallons
     df['tank%_used'] = round(df['gallons'] / 13.55, 4)
 
-    # changes column to datetime
+    # - changes column to datetime
     df['date'] = pd.to_datetime(df['date'].astype(str))
 
-    # creates column with day of the week
+    # - creates column with day of the week
     df['weekday'] = df['date'].dt.dayofweek.apply(lambda x: ['Monday', 'Tuesday', 'Wednesday', 
                                                     'Thursday', 'Friday', 'Saturday', 'Sunday'][x])
 
-    # creates a new column that records the number of days since the last fillup
+    # - creates a new column that records the number of days since the last fillup
     df['days_since_last_fillup'] = df['date'].diff().dt.days
 
-    # add column for cost to go one mile
+    # - add column for cost to go one mile
     df['dollars per mile'] = round(df['dollars'] / df['miles'], 4)
 
     return df
 
 df = mpg_data_creator(df)
 
-# save back to car_mpg_data.csv
+# - save back to car_mpg_data.csv
 df.name = '2017 Jeep Patriot Miles Per Gallon Data'
 df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
-'''
-Create a .csv for a dashboard of insights
-'''
+
+# - Create a .csv for a dashboard of insights
 def insight_creator(df):
     '''
     When passed a df after going through mpg_data_creator,

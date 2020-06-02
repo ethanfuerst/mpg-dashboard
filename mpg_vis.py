@@ -13,11 +13,14 @@ import plotly.io as pio
 from plotly.colors import n_colors
 import plotly.express as px
 import plotly.figure_factory as ff
+import chart_studio
+api_key = f = open("plotly_keys.txt", "r").readline()
+chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
 import datetime as dt
 from datetime import date, timedelta, datetime
 from mpg_refresh import mpg_data_creator, insight_creator
 df = pd.read_csv('car_mpg_data.csv')
-# returns the correct data types
+# - returns the correct data types
 df = mpg_data_creator(df)
 
 def money_format(x):
@@ -25,11 +28,11 @@ def money_format(x):
 
 
 # %%
-# Change line colors
+# todo Change line colors
 X = df['date']
 Y = df['gal_cost']
 
-# format for finding tick vals
+# - format for finding tick vals
 Y_t = Y * 10
 range(math.floor(Y_t.min()), math.ceil(Y_t.max()), 2)
 
@@ -108,8 +111,9 @@ fig.update_layout(
 fig.show()
 
 
+
 # %%
-# Change line colors
+# todo Change line colors
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df['date'],
                                 y=df['mpg'],
@@ -185,8 +189,8 @@ fig.show()
 
 
 # %%
-# mpg vs. miles driven scatter plot
-# colored by date
+# - mpg vs. miles driven scatter plot
+# todo color by date
 
 X = df['miles']
 Y = df['mpg']
@@ -243,12 +247,12 @@ fig.show()
 
 
 # %%
-# $ per mile vs. miles scatter plot
-# colored by date
-# Add average cost per mile as text
+# - $ per mile vs. miles scatter plot
+# todo color by date
+# todo Add average cost per mile as text
 
 X = df['miles']
-# Cents per mile
+# - Cents per mile
 Y = round(df['dollars per mile'] * 100, 2)
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
@@ -304,9 +308,9 @@ fig.show()
 
 
 # %%
-# Predict mpg based on miles driven and date
+# todo Predict mpg based on miles driven and date
 
 
 # %%
-# High/low temp over a year with mpg
+# todo High/low temp over a year with mpg
 
