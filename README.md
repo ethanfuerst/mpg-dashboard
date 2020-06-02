@@ -12,15 +12,11 @@ __*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car
 
 __*mpg_insights.csv*__ - .csv that stores insights about my mpg data
 
-### Jupyter notebooks
-
-__*mpg_vis.ipynb*__ - mpg data visualized with plotly/matplotlib
-
-__*mpg_workbook.ipynb*__ - mpg data workstation
-
 ### Python files
 
 __*mpg_refresh.py*__ - adds columns to car_mpg_data.csv. run after new mpg data is recorded.
+
+__*mpg_vis.py*__ - mpg data visualized with plotly/matplotlib
 
 ### Tableau files
 
