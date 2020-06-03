@@ -27,3 +27,6 @@ __pycache__
 
 # DarkSky ID
 darkskyid.txt
+
+# Plotly API Key
+plotly_key.txt
