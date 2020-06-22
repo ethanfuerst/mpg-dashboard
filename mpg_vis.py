@@ -14,8 +14,8 @@ from plotly.colors import n_colors
 import plotly.express as px
 import plotly.figure_factory as ff
 import chart_studio
-api_key = f = open("plotly_keys.txt", "r").readline()
-chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
+# api_key = f = open("plotly_keys.txt", "r").readline()
+# chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
 import datetime as dt
 from datetime import date, timedelta, datetime
 from mpg_refresh import mpg_data_creator, insight_creator
