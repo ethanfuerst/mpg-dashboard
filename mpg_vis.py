@@ -26,6 +26,7 @@ df = mpg_data_creator(df)
 def money_format(x):
     return '${:.2f}'.format(x)
 
+show_all = False
 
 # %%
 # todo Change line colors
@@ -108,7 +109,8 @@ fig.update_layout(
     )
 )
 
-fig.show()
+if show_all:
+    fig.show()
 
 
 
@@ -185,7 +187,8 @@ fig.update_layout(
     )
 )
 
-fig.show()
+if show_all:
+    fig.show()
 
 
 # %%
@@ -243,7 +246,8 @@ fig.update_layout(
     height=800
 )
 
-fig.show()
+if show_all:
+    fig.show()
 
 
 # %%
@@ -304,7 +308,8 @@ fig.update_layout(
     height=800
 )
 
-fig.show()
+if show_all:
+    fig.show()
 
 
 # %%
