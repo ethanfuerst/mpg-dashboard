@@ -55,7 +55,7 @@ fig.add_trace(go.Scatter(x=df['date'],
 
 fig.update_layout(
     showlegend=False,
-    width=1000,
+    width=700,
     height=500,
     updatemenus=[
         dict(
@@ -134,7 +134,7 @@ fig.add_trace(go.Scatter(x=df['date'],
 fig.update_layout(
     showlegend=False,
     plot_bgcolor='#cccccc',
-    width=1000,
+    width=700,
     height=500,
     updatemenus=[
         dict(
@@ -242,12 +242,12 @@ fig.update_layout(
         range=[Y.min() - .5, Y.max() + .5],
         tickvals=[i for i in range(math.floor(Y.min()),math.ceil(Y.max()))]
     ),
-    width=900,
-    height=800,
+    width=700,
+    height=700,
     annotations=[
         dict(
             x=0.5,
-            y=1.03,
+            y=1.04,
             showarrow=False,
             text="On average, I get " + (round(df_i['MPG'].iloc[-1], 2)).astype(str) + " miles per gallon",
             xref="paper",
@@ -317,12 +317,12 @@ fig.update_layout(
         tickvals=[i for i in range(math.floor(Y.min()), math.ceil(Y.max()) + 1)],
         ticktext=[money_format(i) for i in [i/100 for i in range(math.floor(Y.min()), math.ceil(Y.max()) + 1)]]
     ),
-    width=900,
-    height=800,
+    width=700,
+    height=700,
     annotations=[
         dict(
             x=0.5,
-            y=1.03,
+            y=1.04,
             showarrow=False,
             text="On average, it costs $" + (round(df_i['Cost to go one mile (in cents)'].iloc[-1]/100, 3)).astype(str) + " to drive one mile",
             xref="paper",
@@ -352,10 +352,10 @@ fig = go.Figure(data=[go.Table(
     cells=dict(values=[df_i['Time period'], 
                         df_i['Miles'].apply(lambda x: "{:,}".format(x)),
                         df_i['Dollars'].apply(lambda x: "${:,.2f}".format(x)), 
-                        df_i['Gallons'].apply(lambda x: "{:,}".format(x)), 
+                        df_i['Gallons'].apply(lambda x: "{:,.2f}".format(x)), 
                         round(df_i['MPG'], 2),
                         df_i['Avg gallon cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
-                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 2)).astype(str)],
+                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x))],
                 fill_color=[alt_greys[:len(df_i)]]*3,
                 font_color='black',
                 align='left'))])
@@ -369,8 +369,8 @@ fig.update_layout(
         ),
         x=.5
     ),
-    width=800,
-    height=400
+    width=700,
+    height=500
 )
 
 if show_all:
