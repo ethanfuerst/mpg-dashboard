@@ -38,11 +38,10 @@ __*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is
 - [x] clean up mpg_refresh.py
   - [x] clean up mpg_data_creator()
 - [x] change .py files to .ipynb
-- [ ] remake tableau dashboard in plotly in mpg_vis.ipynb
+- [x] remake tableau dashboard in plotly in mpg_vis.ipynb
   - [x] sync two line graphs in tableau dashboard in plotly
   - [x] figure out how to host vizs on blog using plotly graphs
-  - [ ] figure out why .ipynb files are not showing plotly figures
-  - [ ] display last x days automatically, can zoom out for more
 - [ ] make mpg_insight plotly table
+- [ ] figure out a way to run mpg_vis from mpg_refresh
 - [ ] bring weather back in
   - [ ] find new API for weather
