@@ -14,14 +14,15 @@ from plotly.colors import n_colors
 import plotly.express as px
 import plotly.figure_factory as ff
 import chart_studio
-# api_key = f = open("plotly_keys.txt", "r").readline()
-# chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
+api_key = f = open("plotly_key.txt", "r").readline()
+chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
 import datetime as dt
 from datetime import date, timedelta, datetime
 from mpg_refresh import mpg_data_creator, insight_creator
 df = pd.read_csv('car_mpg_data.csv')
 # - returns the correct data types
 df = mpg_data_creator(df)
+df_i = pd.read_csv('mpg_insights.csv')
 
 def money_format(x):
     return '${:.2f}'.format(x)
@@ -29,7 +30,6 @@ def money_format(x):
 show_all = False
 
 # %%
-# todo Change line colors
 X = df['date']
 Y = df['gal_cost']
 
@@ -112,24 +112,23 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-
+chart_studio.plotly.plot(fig, filename='Cost of a gallon of gas over time', auto_open=False)
 
 # %%
-# todo Change line colors
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df['date'],
                                 y=df['mpg'],
                                 mode='lines',
                                 hovertemplate=df['mpg'].astype(str)+ ' on ' + df['date'].dt.strftime('%b %d %Y'),
                                 name='MPG',
-                                line=dict(color="#1A4D94")
+                                line=dict(color="#CB4F0A")
 ))
 fig.add_trace(go.Scatter(x=df['date'],
                                 y=df['mpg'].rolling(window=5).mean(),
                                 mode='lines',
                                 hovertemplate=round(df['mpg'].rolling(window=5).mean(),2).astype(str) + ' on ' + df['date'].dt.strftime('%b %d %Y'),
                                 name='Moving average',
-                                line=dict(color="#5C7DAA")
+                                line=dict(color="#F58426")
 ))
 
 fig.update_layout(
@@ -190,10 +189,12 @@ fig.update_layout(
 if show_all:
     fig.show()
 
+chart_studio.plotly.plot(fig, filename='Miles per gallon over time', auto_open=False)
+
 
 # %%
 # - mpg vs. miles driven scatter plot
-# todo color by date
+# todo add average mpg as text
 
 X = df['miles']
 Y = df['mpg']
@@ -249,10 +250,11 @@ fig.update_layout(
 if show_all:
     fig.show()
 
+chart_studio.plotly.plot(fig, filename='Miles per gallon vs. miles driven', auto_open=False)
+
 
 # %%
 # - $ per mile vs. miles scatter plot
-# todo color by date
 # todo Add average cost per mile as text
 
 X = df['miles']
@@ -311,6 +313,46 @@ fig.update_layout(
 if show_all:
     fig.show()
 
+
+chart_studio.plotly.plot(fig, filename='Cost per mile vs. miles driven', auto_open=False)
+
+
+#%%
+alt_greys = ['#cccccc', '#e4e4e4'] * len(df_i)
+fig = go.Figure(data=[go.Table(
+    header=dict(values=['Time period', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost',
+       'Cost to go one mile'],
+                fill_color='#5C7DAA',
+                font_color='white',
+                align='left'),
+    cells=dict(values=[df_i['Time period'], 
+                        df_i['Miles'].apply(lambda x: "{:,}".format(x)),
+                        df_i['Dollars'].apply(lambda x: "${:,.2f}".format(x)), 
+                        df_i['Gallons'].apply(lambda x: "{:,}".format(x)), 
+                        round(df_i['MPG'], 2),
+                        df_i['Avg gallon cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
+                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 3)).astype(str)],
+                fill_color=[alt_greys[:len(df_i)]]*3,
+                font_color='black',
+                align='left'))])
+
+fig.update_layout(
+    title=dict(
+        text='Gas Insights',
+        font=dict(
+            size=24,
+            color='#000000'
+        ),
+        x=.5
+    ),
+    width=800,
+    height=400
+)
+
+if show_all:
+    fig.show()
+
+chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
 
 # %%
 # todo Predict mpg based on miles driven and date
