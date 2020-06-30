@@ -194,7 +194,6 @@ chart_studio.plotly.plot(fig, filename='Miles per gallon over time', auto_open=F
 
 # %%
 # - mpg vs. miles driven scatter plot
-# todo add average mpg as text
 
 X = df['miles']
 Y = df['mpg']
@@ -244,7 +243,20 @@ fig.update_layout(
         tickvals=[i for i in range(math.floor(Y.min()),math.ceil(Y.max()))]
     ),
     width=900,
-    height=800
+    height=800,
+    annotations=[
+        dict(
+            x=0.5,
+            y=1.03,
+            showarrow=False,
+            text="On average, I get " + (round(df_i['MPG'].iloc[-1], 2)).astype(str) + " miles per gallon",
+            xref="paper",
+            yref="paper",
+            font=dict(
+                color="black",
+                size=12
+            )
+        )]
 )
 
 if show_all:
@@ -255,7 +267,6 @@ chart_studio.plotly.plot(fig, filename='Miles per gallon vs. miles driven', auto
 
 # %%
 # - $ per mile vs. miles scatter plot
-# todo Add average cost per mile as text
 
 X = df['miles']
 # - Cents per mile
@@ -307,7 +318,20 @@ fig.update_layout(
         ticktext=[money_format(i) for i in [i/100 for i in range(math.floor(Y.min()), math.ceil(Y.max()) + 1)]]
     ),
     width=900,
-    height=800
+    height=800,
+    annotations=[
+        dict(
+            x=0.5,
+            y=1.03,
+            showarrow=False,
+            text="On average, it costs $" + (round(df_i['Cost to go one mile (in cents)'].iloc[-1]/100, 3)).astype(str) + " to drive one mile",
+            xref="paper",
+            yref="paper",
+            font=dict(
+                color="black",
+                size=12
+            )
+        )]
 )
 
 if show_all:
@@ -331,7 +355,7 @@ fig = go.Figure(data=[go.Table(
                         df_i['Gallons'].apply(lambda x: "{:,}".format(x)), 
                         round(df_i['MPG'], 2),
                         df_i['Avg gallon cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
-                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 3)).astype(str)],
+                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 2)).astype(str)],
                 fill_color=[alt_greys[:len(df_i)]]*3,
                 font_color='black',
                 align='left'))])
