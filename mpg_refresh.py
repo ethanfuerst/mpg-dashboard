@@ -11,7 +11,6 @@ import urllib.request, json, os, itertools, threading, time, sys
 # - and save it back to car_mpg_data.csv
 
 df = pd.read_csv('car_mpg_data.csv')
-df.name = 'Car Data'
 
 def mpg_data_creator(df):
     '''
