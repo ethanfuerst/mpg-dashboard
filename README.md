@@ -42,6 +42,8 @@ __*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is
   - [x] sync two line graphs in tableau dashboard in plotly
   - [x] figure out how to host vizs on blog using plotly graphs
 - [x] make mpg_insight plotly table
+- [ ] make 3D plot with miles driven, cost to go one mile and mpg
+  - [ ] clustering?
 - [ ] figure out a way to run mpg_vis from mpg_refresh
 - [ ] bring weather back in
   - [ ] find new API for weather
