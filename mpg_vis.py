@@ -18,11 +18,9 @@ api_key = f = open("plotly_key.txt", "r").readline()
 chart_studio.tools.set_credentials_file(username='ethanfuerst', api_key=api_key)
 import datetime as dt
 from datetime import date, timedelta, datetime
-from mpg_refresh import mpg_data_creator, insight_creator
-df = pd.read_csv('car_mpg_data.csv')
-# - returns the correct data types
-df = mpg_data_creator(df)
-df_i = pd.read_csv('mpg_insights.csv')
+from mpg_refresh import get_data, insight_creator
+df = get_data()
+df_i = insight_creator(df)
 
 def money_format(x):
     return '${:.2f}'.format(x)
@@ -390,3 +388,6 @@ chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
 # %%
 # todo High/low temp over a year with mpg
 
+#%%
+def vis_creator():
+    

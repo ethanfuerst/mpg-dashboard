@@ -1,25 +1,42 @@
 #%%
 import pandas as pd
 import datetime as dt
+import pickle
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import urllib.request, json, os, itertools, threading, time, sys
 
 #%%
+def get_data():
+# from https://developers.google.com/sheets/api/quickstart/python
+    scope = ['https://www.googleapis.com/auth/spreadsheets']
+    spreadsheet_id = '1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk'
+    range_name = 'Data!A:D'
+    creds = None
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', scope)
+            creds = flow.run_local_server(port=0)
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
 
-# - First I will pull the data from car_mpg_data.csv, create new columns
-# - and save it back to car_mpg_data.csv
+    service = build('sheets', 'v4', credentials=creds)
 
-df = pd.read_csv('car_mpg_data.csv')
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id,
+                                range=range_name).execute()
+    values = result.get('values', [])
 
-def mpg_data_creator(df):
-    '''
-    When passed a df with these columns:
-    miles, dollars, gallons, date
-    this method will return a df with the following columns:
-    gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile
-    '''
-    df = df[['miles', 'dollars', 'gallons', 'date']].copy()
+    df = pd.DataFrame(columns=values[0], data=values[1:])
+
     df['miles'] = round(df['miles'].astype(float), 1)
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
@@ -42,16 +59,23 @@ def mpg_data_creator(df):
     # - creates a new column that records the number of days since the last fillup
     df['days_since_last_fillup'] = df['date'].diff().dt.days
 
+    # - change back to string format
+    df['date'] = pd.to_datetime(df['date']).dt.strftime('%m/%d/%y')
+
     # - add column for cost to go one mile
     df['dollars per mile'] = round(df['dollars'] / df['miles'], 4)
 
+    # - new column for avg miles per day
+    df['miles per day'] = round(df['miles'] / df['days_since_last_fillup'], 3)
+
     return df
 
-df = mpg_data_creator(df)
+#%%
+
+df = get_data()
 
 # - save back to car_mpg_data.csv
 df.name = '2017 Jeep Patriot Miles Per Gallon Data'
-df.to_csv('car_mpg_data.csv', index=False)
 
 #%%
 
@@ -61,6 +85,7 @@ def insight_creator(df):
     When passed a df after going through mpg_data_creator,
     this method will return a df that will provide insights on the data in different time frames
     '''
+    df['date'] = pd.to_datetime(df['date'].astype(str))
     last_fillup = df.tail(1).copy()
     last_month = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=1))].copy()
     last_3 = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=3))].copy()
@@ -86,26 +111,4 @@ def insight_creator(df):
     return df_insights
 
 df_insights = insight_creator(df)
-
-df_insights.to_csv('mpg_insights.csv', index=False)
-
-#%%
-def mpg_insights(df):
-    '''
-    Print insights
-    '''
-    print()
-    print(df.name + ':')
-    print("Total miles: " + str(round(sum(df['miles']), 2)) + " miles")
-    print("Total spent on gas: $" + str(round(sum(df['dollars']), 2 )))
-    print("Total gallons pumped: " + str(round(sum(df['gallons']), 2)) + " gallons")
-    print("Miles per gallon: " + str(round(sum(df['miles'])/sum(df['gallons']), 2)))
-    print("Average cost of one gallon of gas: $" + str(round(sum(df['dollars'])/sum(df['gallons']), 2)))
-    print("Cost to go one mile: " + str(round(sum(df['dollars'])/sum(df['miles']) * 100, 3)) + " cents")
-    print()
-
-#%%
-if __name__ == '__main__':
-    mpg_insights(df)
-
 # %%
