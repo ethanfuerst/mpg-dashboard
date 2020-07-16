@@ -6,23 +6,11 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 ## Files in this repository by extension
 
-### .csv
-
-__*car_mpg_data.csv*__ - .csv that stores miles, dollars and gallons of each car fill up as well as date. Once mpg_refresh.py is run, new columns are added on.
-
-__*mpg_insights.csv*__ - .csv that stores insights about my mpg data
-
 ### .py
 
-__*mpg_refresh.py*__ - adds columns to car_mpg_data.csv. run after new mpg data is recorded.
+__*mpg_refresh.py*__ - pulls data from gsheet and created dataframes. run after new mpg data is recorded.
 
 __*mpg_vis.py*__ - mpg data visualized with plotly/matplotlib
-
-### .twb
-
-__*carmpg.twb*__ - dashboards and various vizs for data
-
-__*Gas Tank Dashboard.twb*__ - tableau workbook with finalized Dashboard that is published to [my Tableau Public profile](https://public.tableau.com/profile/ethan.fuerst/)
 
 ## TODO
 
