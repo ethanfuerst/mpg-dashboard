@@ -29,6 +29,8 @@ def money_format(x):
 
 show_all = False
 
+# todo create dict of figs and names then iterate over and update plotly server
+
 # %%
 X = df['date']
 Y = df['gal_cost']
@@ -36,6 +38,7 @@ Y = df['gal_cost']
 # - format for finding tick vals
 Y_t = Y * 10
 range(math.floor(Y_t.min()), math.ceil(Y_t.max()), 2)
+date_range = pd.date_range(df['date'].min(),df['date'].max(),freq='MS')
 
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df['date'],
@@ -97,8 +100,8 @@ fig.update_layout(
     ),
     xaxis=dict(
         title='Date',
-        ticktext=pd.date_range(df['date'].min(),df['date'].max(),freq='MS').strftime("%b '%y").tolist(),
-        tickvals=pd.date_range(df['date'].min(),df['date'].max(),freq='MS'),
+        ticktext=date_range.strftime("%b '%y").tolist(),
+        tickvals=date_range,
         range=[df['date'].min() - dt.timedelta(days=5), df['date'].max() + dt.timedelta(days=5)]
     ),
     yaxis=dict(
@@ -115,6 +118,8 @@ if show_all:
 chart_studio.plotly.plot(fig, filename='Cost of a gallon of gas over time', auto_open=False)
 
 # %%
+date_range = pd.date_range(df['date'].min(),df['date'].max(),freq='MS')
+
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df['date'],
                                 y=df['mpg'],
@@ -175,8 +180,8 @@ fig.update_layout(
     ),
     xaxis=dict(
         title='Date',
-        ticktext=pd.date_range(df['date'].min(),df['date'].max(),freq='MS').strftime("%b '%y").tolist(),
-        tickvals=pd.date_range(df['date'].min(),df['date'].max(),freq='MS'),
+        ticktext=date_range.strftime("%b '%y").tolist(),
+        tickvals=date_range,
         range=[df['date'].min() - dt.timedelta(days=5), df['date'].max() + dt.timedelta(days=5)]
     ),
     yaxis=dict(
