@@ -37,6 +37,18 @@ def get_data():
 
     df = pd.DataFrame(columns=values[0], data=values[1:])
 
+    df = create_data(df)
+
+    return df
+
+#%%
+def create_data(df):
+    '''
+    When passed a df with these columns:
+    miles, dollars, gallons, date
+    this method will return a df with the following columns:
+    gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile, miles per day
+    '''
     df['miles'] = round(df['miles'].astype(float), 1)
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
@@ -82,7 +94,7 @@ df.name = '2017 Jeep Patriot Miles Per Gallon Data'
 # - Create a .csv for a dashboard of insights
 def insight_creator(df):
     '''
-    When passed a df after going through mpg_data_creator,
+    When passed a df after going through get_data or create_data,
     this method will return a df that will provide insights on the data in different time frames
     '''
     df['date'] = pd.to_datetime(df['date'].astype(str))
