@@ -78,16 +78,13 @@ def create_data(df):
     df['dollars per mile'] = round(df['dollars'] / df['miles'], 4)
 
     # - new column for avg miles per day
-    df['miles per day'] = round(df['miles'] / df['days_since_last_fillup'], 3)
+    df['miles per day'] = round(df['miles'] / df['days_since_last_fillup'], 2)
 
     return df
 
 #%%
 
 df = get_data()
-
-# - save back to car_mpg_data.csv
-df.name = '2017 Jeep Patriot Miles Per Gallon Data'
 
 #%%
 
@@ -97,6 +94,7 @@ def insight_creator(df):
     When passed a df after going through get_data or create_data,
     this method will return a df that will provide insights on the data in different time frames
     '''
+    df = df.fillna(0).copy()
     df['date'] = pd.to_datetime(df['date'].astype(str))
     last_fillup = df.tail(1).copy()
     last_month = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(months=1))].copy()
@@ -108,7 +106,8 @@ def insight_creator(df):
     time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
 
     df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
-                                        'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)'])
+                                        'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)',
+                                        'Average miles per day'])
 
     for i in range(len(time_periods)):
         value = list(time_periods.values())[i]
@@ -118,7 +117,8 @@ def insight_creator(df):
                                 round(sum(value['gallons']),3), 
                                 round(sum(value['miles']) / sum(value['gallons']),3), 
                                 round(sum(value['dollars']) / sum(value['gallons']),2), 
-                                round(sum(value['dollars']) / sum(value['miles']) * 100 ,1)]
+                                round(sum(value['dollars']) / sum(value['miles']) * 100 ,1),
+                                round(sum(value['miles']) / sum(value['days_since_last_fillup']),2)]
     
     return df_insights
 
