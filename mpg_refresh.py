@@ -2,6 +2,7 @@
 import pandas as pd
 import datetime as dt
 import pickle
+import os
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -124,3 +125,5 @@ def insight_creator(df):
 
 df_insights = insight_creator(df)
 # %%
+# - lastly, just run the mpg_vis file to update all the visualizations
+import mpg_vis

@@ -20,14 +20,13 @@ import datetime as dt
 from datetime import date, timedelta, datetime
 from mpg_refresh import get_data, insight_creator
 df = get_data()
+df['date'] = pd.to_datetime(df['date'].astype(str))
 df_i = insight_creator(df)
 
 def money_format(x):
     return '${:.2f}'.format(x)
 
 show_all = False
-
-# todo create dict of figs and names then iterate over and update plotly server
 
 # %%
 X = df['date']
@@ -348,7 +347,7 @@ chart_studio.plotly.plot(fig, filename='Cost per mile vs. miles driven', auto_op
 alt_greys = ['#cccccc', '#e4e4e4'] * len(df_i)
 fig = go.Figure(data=[go.Table(
     header=dict(values=['Time period', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost',
-       'Cost to go one mile'],
+       'Cost to go one mile', 'Average miles per day'],
                 fill_color='#5C7DAA',
                 font_color='white',
                 align='left'),
@@ -358,7 +357,8 @@ fig = go.Figure(data=[go.Table(
                         df_i['Gallons'].apply(lambda x: "{:,.2f}".format(x)), 
                         round(df_i['MPG'], 2),
                         df_i['Avg gallon cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
-                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x))],
+                        '$' + (round(df_i['Cost to go one mile (in cents)']/100, 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x)),
+                        df_i['Average miles per day']],
                 fill_color=[alt_greys[:len(df_i)]]*3,
                 font_color='black',
                 align='left'))])
@@ -389,5 +389,4 @@ chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
 # todo High/low temp over a year with mpg
 
 #%%
-def vis_creator():
     
