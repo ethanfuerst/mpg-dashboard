@@ -373,7 +373,7 @@ fig.update_layout(
         x=.5
     ),
     width=700,
-    height=500
+    height=600
 )
 
 if show_all:
