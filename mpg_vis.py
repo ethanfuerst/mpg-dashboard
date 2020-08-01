@@ -381,6 +381,48 @@ if show_all:
 
 chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
 
+#%%
+# - last 10 fillups in table
+
+last_10 = df.sort_values('date', ascending=False).head(10)
+alt_greys = ['#cccccc', '#e4e4e4'] * len(last_10)
+fig = go.Figure(data=[go.Table(
+    header=dict(values=['Date', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Gallon cost',
+                'Tank % Used', 'Cost to go one mile', 'Average miles per day'],
+                fill_color='#5C7DAA',
+                font_color='white',
+                align='left'),
+    cells=dict(values=[last_10['date'].dt.strftime('%b %d %Y'),
+                        last_10['miles'].apply(lambda x: "{:,}".format(x)),
+                        last_10['dollars'].apply(lambda x: "${:,.2f}".format(x)), 
+                        last_10['gallons'].apply(lambda x: "{:,.2f}".format(x)), 
+                        round(last_10['mpg'], 2),
+                        last_10['gal_cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
+                        (last_10['tank%_used'] * 100).astype(str) + '%',
+                        '$' + (round(last_10['dollars per mile']/100, 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x)),
+                        last_10['miles per day']],
+                fill_color=[alt_greys[:len(last_10)]]*3,
+                font_color='black',
+                align='left'))])
+
+fig.update_layout(
+    title=dict(
+        text='Last 10 Fillups',
+        font=dict(
+            size=24,
+            color='#000000'
+        ),
+        x=.5
+    ),
+    width=700,
+    height=600
+)
+
+if show_all:
+    fig.show()
+
+chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
+
 # %%
 # todo Predict mpg based on miles driven and date
 
