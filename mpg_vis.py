@@ -423,7 +423,7 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-# chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
+chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
 
 # %%
 # todo Predict mpg based on miles driven and date
