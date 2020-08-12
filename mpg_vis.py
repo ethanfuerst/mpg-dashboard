@@ -344,6 +344,8 @@ chart_studio.plotly.plot(fig, filename='Cost per mile vs. miles driven', auto_op
 
 
 #%%
+# - Gas insight table
+
 alt_greys = ['#cccccc', '#e4e4e4'] * len(df_i)
 fig = go.Figure(data=[go.Table(
     header=dict(values=['Time period', 'Miles', 'Dollars', 'Gallons', 'MPG', 'Avg gallon cost',
@@ -399,7 +401,7 @@ fig = go.Figure(data=[go.Table(
                         round(last_10['mpg'], 2),
                         last_10['gal_cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
                         (last_10['tank%_used'] * 100).astype(str) + '%',
-                        '$' + (round(last_10['dollars per mile']/100, 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x)),
+                        '$' + (round(last_10['dollars per mile'], 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x)),
                         last_10['miles per day']],
                 fill_color=[alt_greys[:len(last_10)]]*3,
                 font_color='black',
@@ -421,7 +423,7 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
+# chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
 
 # %%
 # todo Predict mpg based on miles driven and date
