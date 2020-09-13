@@ -126,4 +126,5 @@ def insight_creator(df):
 df_insights = insight_creator(df)
 # %%
 # - lastly, just run the mpg_vis file to update all the visualizations
-import mpg_vis
+if __name__ == '__main__':
+    import mpg_vis
