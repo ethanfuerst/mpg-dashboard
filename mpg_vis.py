@@ -309,7 +309,7 @@ fig = go.Figure(data=[go.Scatter(x=X,
                                 '<br>r^2 = {}'.format(r_2) + 
                                 '<br>RMSE = {}'.format(rmse),
                                 hovertemplate='<b>Miles driven: </b>' + X.astype(str)+
-                                '<br><b>Predicted dollars per mile: </b>' + Y.astype(str)+
+                                '<br><b>Predicted cents per mile: </b>' + Y.astype(str)+
                                 '<extra></extra>'
                                 )]
                 )
