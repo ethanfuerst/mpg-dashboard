@@ -4,8 +4,8 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 import math
-from scipy import stats
-from scipy.optimize import curve_fit
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
 import matplotlib.pyplot as plt
 import plotly
 import plotly.graph_objects as go
@@ -26,12 +26,26 @@ df_i = insight_creator(df)
 def money_format(x):
     return '${:.2f}'.format(x)
 
-show_all = False
+show_all = True
+update_layouts = False
+
+#%%
+def lin_reg(X, Y):
+    # * maybe add a train/test split?
+    lr = LinearRegression()
+    lr.fit(X.values.reshape(-1, 1),Y)
+    intercept = lr.intercept_
+    slope = lr.coef_[0]
+    preds = slope * X + intercept
+    rmse = round(np.sqrt(metrics.mean_squared_error(Y, preds)), 3)
+    r_2 = round(metrics.r2_score(Y, preds), 2)
+    return slope, intercept, preds, rmse, r_2
 
 # %%
 X = df['date']
 Y = df['gal_cost']
 
+lin_reg(X, Y)
 # - format for finding tick vals
 Y_t = Y * 10
 range(math.floor(Y_t.min()), math.ceil(Y_t.max()), 2)
@@ -112,7 +126,8 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Cost of a gallon of gas over time', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Cost of a gallon of gas over time', auto_open=False)
 
 # %%
 date_range = pd.date_range(df['date'].min(),df['date'].max(),freq='MS')
@@ -191,7 +206,8 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Miles per gallon over time', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Miles per gallon over time', auto_open=False)
 
 
 # %%
@@ -200,9 +216,7 @@ chart_studio.plotly.plot(fig, filename='Miles per gallon over time', auto_open=F
 X = df['miles']
 Y = df['mpg']
 
-slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
-linreg = slope * X + intercept
-r_2 = round(r_value ** 2, 2)
+slope, intercept, preds, rmse, r_2 = lin_reg(X, Y)
 
 fig = go.Figure(data=[go.Scatter(x=X,
                                 y=Y,
@@ -215,11 +229,12 @@ fig = go.Figure(data=[go.Scatter(x=X,
                                 ),
                         go.Scatter(
                                 x=X,
-                                y=linreg,
+                                y=preds,
                                 mode='lines',
                                 name='Linear Regression' +
                                 '<br>y = {0}x + {1}'.format(round(slope, 3), round(intercept, 2)) + 
-                                '<br>r^2 = {}'.format(r_2),
+                                '<br>r^2 = {}'.format(r_2) + 
+                                '<br>RMSE = {}'.format(rmse),
                                 hovertemplate='<b>Miles driven: </b>' + X.astype(str)+
                                 '<br><b>Predicted miles per gallon: </b>' + Y.astype(str)+
                                 '<extra></extra>'
@@ -264,7 +279,8 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Miles per gallon vs. miles driven', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Miles per gallon vs. miles driven', auto_open=False)
 
 
 # %%
@@ -274,9 +290,7 @@ X = df['miles']
 # - Cents per mile
 Y = round(df['dollars per mile'] * 100, 2)
 
-slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
-linreg = slope * X + intercept
-r_2 = round(r_value ** 2, 2)
+slope, intercept, preds, rmse, r_2 = lin_reg(X, Y)
 
 fig = go.Figure(data=[go.Scatter(x=X,
                                 y=Y,
@@ -289,11 +303,12 @@ fig = go.Figure(data=[go.Scatter(x=X,
                                 ),
                         go.Scatter(
                                 x=X,
-                                y=linreg,
+                                y=preds,
                                 mode='lines',
                                 name='Linear Regression' +
                                 '<br>y = {0}x + {1}'.format(round(slope, 3), round(intercept, 2)) + 
-                                '<br>r^2 = {}'.format(r_2),
+                                '<br>r^2 = {}'.format(r_2) + 
+                                '<br>RMSE = {}'.format(rmse),
                                 hovertemplate='<b>Miles driven: </b>' + X.astype(str)+
                                 '<br><b>Predicted dollars per mile: </b>' + Y.astype(str)+
                                 '<extra></extra>'
@@ -326,7 +341,7 @@ fig.update_layout(
             x=0.5,
             y=1.04,
             showarrow=False,
-            text="On average, it costs $" + (round(df_i['Cost to go one mile (in cents)'].iloc[-1]/100, 3)).astype(str) + " to drive one mile",
+            text="On average, it costs " + (round(df_i['Cost to go one mile (in cents)'].iloc[-1], 2)).astype(str) + " cents to drive one mile",
             xref="paper",
             yref="paper",
             font=dict(
@@ -339,8 +354,8 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-
-chart_studio.plotly.plot(fig, filename='Cost per mile vs. miles driven', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Cost per mile vs. miles driven', auto_open=False)
 
 
 #%%
@@ -381,7 +396,8 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Gas insights', auto_open=False)
 
 #%%
 # - last 10 fillups in table
@@ -423,11 +439,11 @@ fig.update_layout(
 if show_all:
     fig.show()
 
-chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
+if update_layouts:
+    chart_studio.plotly.plot(fig, filename='Last 10 fillups', auto_open=False)
 
 # %%
 # todo Predict mpg based on miles driven and date
-
 
 # %%
 # todo High/low temp over a year with mpg
