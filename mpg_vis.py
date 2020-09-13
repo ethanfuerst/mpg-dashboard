@@ -26,8 +26,8 @@ df_i = insight_creator(df)
 def money_format(x):
     return '${:.2f}'.format(x)
 
-show_all = True
-update_layouts = False
+show_all = False
+update_layouts = True
 
 #%%
 def lin_reg(X, Y):
@@ -45,7 +45,6 @@ def lin_reg(X, Y):
 X = df['date']
 Y = df['gal_cost']
 
-lin_reg(X, Y)
 # - format for finding tick vals
 Y_t = Y * 10
 range(math.floor(Y_t.min()), math.ceil(Y_t.max()), 2)
