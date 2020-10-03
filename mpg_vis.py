@@ -415,7 +415,7 @@ fig = go.Figure(data=[go.Table(
                         last_10['gallons'].apply(lambda x: "{:,.2f}".format(x)), 
                         round(last_10['mpg'], 2),
                         last_10['gal_cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x)),
-                        (last_10['tank%_used'] * 100).astype(str) + '%',
+                        (round(last_10['tank%_used'] * 100, 2)).astype(str) + '%',
                         '$' + (round(last_10['dollars per mile'], 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x)),
                         last_10['miles per day']],
                 fill_color=[alt_greys[:len(last_10)]]*3,
