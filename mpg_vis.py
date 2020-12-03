@@ -110,7 +110,7 @@ fig.update_layout(
     ),
     xaxis=dict(
         title='Date',
-        ticktext=date_range.strftime("%b '%y").tolist(),
+        ticktext=[i.strftime("%b '%y") for i in date_range],
         tickvals=date_range,
         range=[df['date'].min() - dt.timedelta(days=5), df['date'].max() + dt.timedelta(days=5)]
     ),
