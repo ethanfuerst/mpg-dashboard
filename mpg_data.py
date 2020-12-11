@@ -39,7 +39,7 @@ def get_data():
 
     creds_dict = {
         "type": "service_account",
-        "project_id": "mpg-dashboard-298303",
+        "project_id": env('project_id'),
         "private_key_id": env('private_key_id'),
         "private_key": env('private_key').replace("\\n", "\n"),
         "client_email": env('client_email'),
