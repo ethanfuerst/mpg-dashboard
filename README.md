@@ -2,7 +2,7 @@
 
 My mission for this project is to see how my miles per gallon fluctuates over the year and throughout the seasons. Once I have enough data, I'd like to how my miles per gallon changes with the weather in Austin, TX. I'd also like to see how the price of a gallon of gas changes over time.
 
-[Here](https://public.tableau.com/profile/ethan.fuerst#!/vizhome/mpgdatavis/GasTankDashboard) is a link to the Tableau dashboard for this project
+[Here](https://tidbitstatistics-mpg-dash.herokuapp.com/) is a link to the dashboard for this project
 
 ## Files in this repository by extension
 
