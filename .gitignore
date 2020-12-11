@@ -1,41 +1,6 @@
-# Folder view configuration files
-.DS_Store
-.ipynb_checkpoints
-.~carmpg__*
-.~Gas Tank Dashboard*
 venv
 *.pyc
 .DS_Store
 .env
-
-
-# .command file that runs mpg_refresh.py
-mpg_update.command
-
-# Icon
-Icon\r
-Icon\r\r
-Icon[
-]
-Icon?
-"Icon[\r]"
-Icon[\r]
-
-# VS Code Settings
 .vscode
-
-# Compiled Python files
-*.pyc
-
-# Pycache
-__pycache__
-
-# DarkSky ID
-darkskyid.txt
-
-# Plotly API Key
-plotly_key.txt
-
-# google creds
-credentials.json
-token.pickle
+env_var.py
