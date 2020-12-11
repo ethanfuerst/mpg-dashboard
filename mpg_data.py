@@ -10,7 +10,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 import urllib.request, json, time, sys
 import json
-# import environ
 
 
 def money_format(x):
@@ -31,11 +30,6 @@ def get_data():
     Pulls mpg data from https://docs.google.com/spreadsheets/d/1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk
     and returns a formatted df
     '''
-    
-    # env = environ.Env(
-    #     # set casting, default value
-    #     DEBUG=(bool, False)
-    # )
 
     creds_dict = {
         "type": "service_account",
