@@ -10,7 +10,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 import urllib.request, json, time, sys
 import json
-import environ
+# import environ
 
 
 def money_format(x):
@@ -32,22 +32,22 @@ def get_data():
     and returns a formatted df
     '''
     
-    env = environ.Env(
-        # set casting, default value
-        DEBUG=(bool, False)
-    )
+    # env = environ.Env(
+    #     # set casting, default value
+    #     DEBUG=(bool, False)
+    # )
 
     creds_dict = {
         "type": "service_account",
-        "project_id": env('project_id'),
-        "private_key_id": env('private_key_id'),
-        "private_key": env('private_key').replace("\\n", "\n"),
-        "client_email": env('client_email'),
-        "client_id": env('client_id'),
+        "project_id": os.environ["project_id"],
+        "private_key_id": os.environ["private_key_id"],
+        "private_key": os.environ["private_key"].replace("\\n", "\n"),
+        "client_email": os.environ["client_email"],
+        "client_id": os.environ["client_id"],
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": env('client_x509_cert_url')
+        "client_x509_cert_url": os.environ["client_x509_cert_url"]
     }
 
     with open('api_creds.json', 'w') as fp:
