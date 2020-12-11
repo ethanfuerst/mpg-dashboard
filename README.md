@@ -33,6 +33,5 @@ __*mpg_data.py*__ - pulls and formats data from google sheet
 - [ ] compare linear regression of metrics over different times
 - [ ] make 3D plot with miles driven, cost to go one mile and mpg
   - [ ] clustering?
-- [ ] figure out a way to run mpg_vis from mpg_refresh
 - [ ] bring weather back in
   - [ ] find new API for weather
