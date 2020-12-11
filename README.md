@@ -8,9 +8,9 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 ### .py
 
-__*mpg_refresh.py*__ - pulls data from gsheet and created dataframes. run after new mpg data is recorded.
+__*mpg_dashboard.py*__ - draft of [mpg dashboard](https://tidbitstatistics-mpg-dash.herokuapp.com/)
 
-__*mpg_vis.py*__ - mpg data visualized with plotly/matplotlib
+__*mpg_data.py*__ - pulls and formats data from google sheet
 
 ## TODO
 
@@ -33,6 +33,5 @@ __*mpg_vis.py*__ - mpg data visualized with plotly/matplotlib
 - [ ] compare linear regression of metrics over different times
 - [ ] make 3D plot with miles driven, cost to go one mile and mpg
   - [ ] clustering?
-- [ ] figure out a way to run mpg_vis from mpg_refresh
 - [ ] bring weather back in
   - [ ] find new API for weather

@@ -1,98 +1,93 @@
-#%%
 import pandas as pd
+import numpy as np
 import datetime as dt
-import pickle
 import os
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
-import urllib.request, json, os, itertools, threading, time, sys
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+import urllib.request, json, time, sys
+import json
+import environ
 
-#%%
+
+def money_format(x):
+    return '${:.2f}'.format(x)
+
+def lin_reg(X, Y):
+    lr = LinearRegression()
+    lr.fit(X.values.reshape(-1, 1),Y)
+    intercept = lr.intercept_
+    slope = lr.coef_[0]
+    preds = slope * X + intercept
+    rmse = round(np.sqrt(metrics.mean_squared_error(Y, preds)), 3)
+    r_2 = round(metrics.r2_score(Y, preds), 2)
+    return slope, intercept, preds, rmse, r_2
+
 def get_data():
-# from https://developers.google.com/sheets/api/quickstart/python
-    scope = ['https://www.googleapis.com/auth/spreadsheets']
-    spreadsheet_id = '1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk'
-    range_name = 'Data!A:D'
-    creds = None
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', scope)
-            creds = flow.run_local_server(port=0)
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-
-    service = build('sheets', 'v4', credentials=creds)
-
-    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id,
-                                range=range_name).execute()
-    values = result.get('values', [])
-
-    df = pd.DataFrame(columns=values[0], data=values[1:])
-
-    df = create_data(df)
-
-    return df
-
-#%%
-def create_data(df):
     '''
-    When passed a df with these columns:
-    miles, dollars, gallons, date
-    this method will return a df with the following columns:
-    gal_cost, mpg, tank%_used, weekday, days_since_last_fillup, dollars per mile, miles per day
+    Pulls mpg data from https://docs.google.com/spreadsheets/d/1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk
+    and returns a formatted df
     '''
+    
+    env = environ.Env(
+        # set casting, default value
+        DEBUG=(bool, False)
+    )
+
+    creds_dict = {
+        "type": "service_account",
+        "project_id": "mpg-dashboard-298303",
+        "private_key_id": env('private_key_id'),
+        "private_key": env('private_key').replace("\\n", "\n"),
+        "client_email": env('client_email'),
+        "client_id": env('client_id'),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": env('client_x509_cert_url')
+    }
+
+    with open('api_creds.json', 'w') as fp:
+        json.dump(creds_dict, fp)
+
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('api_creds.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open('MPG Data')
+    sheet_instance = sheet.get_worksheet(0)
+    records_data = sheet_instance.get_all_records()
+    df = pd.DataFrame.from_dict(records_data)
+
+    df = df.replace(r'^\s*$', np.nan, regex=True).copy()
+    df = df.dropna().copy()
+
     df['miles'] = round(df['miles'].astype(float), 1)
     df['dollars'] = round(df['dollars'].astype(float), 2)
     df['gallons'] = round(df['gallons'].astype(float), 3)
 
-    # - creating gal_cost and mpg
     df['gal_cost'] = round(df['dollars'] / df['gallons'], 2)
     df['mpg'] = round(df['miles'] / df['gallons'], 2)
 
-    # - creating a new column to determine what percent of my tank was used up when filled up
     # - 2017 Jeep Patriot tank size = 13.55 gallons
     df['tank%_used'] = round(df['gallons'] / 13.55, 4)
 
-    # - changes column to datetime
     df['date'] = pd.to_datetime(df['date'].astype(str))
-
-    # - creates column with day of the week
     df['weekday'] = df['date'].dt.dayofweek.apply(lambda x: ['Monday', 'Tuesday', 'Wednesday', 
                                                     'Thursday', 'Friday', 'Saturday', 'Sunday'][x])
-
-    # - creates a new column that records the number of days since the last fillup
     df['days_since_last_fillup'] = df['date'].diff().dt.days
-
-    # - change back to string format
     df['date'] = pd.to_datetime(df['date']).dt.strftime('%m/%d/%y')
 
-    # - add column for cost to go one mile
     df['dollars per mile'] = round(df['dollars'] / df['miles'], 4)
-
-    # - new column for avg miles per day
     df['miles per day'] = round(df['miles'] / df['days_since_last_fillup'], 2)
-
+    
     return df
 
-#%%
-
-df = get_data()
-
-#%%
-
-# - Create a .csv for a dashboard of insights
 def insight_creator(df):
     '''
-    When passed a df after going through get_data or create_data,
+    When passed a df after going through get_data,
     this method will return a df that will provide insights on the data in different time frames
     '''
     df = df.fillna(0).copy()
@@ -104,7 +99,8 @@ def insight_creator(df):
     last_year = df[df['date'] >= pd.Timestamp(date.today() - relativedelta(years=1))].copy()
     all_time = df.copy()
 
-    time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
+    time_periods = {'Last Fillup':last_fillup, 'Last Month':last_month, 'Last 3 Months':last_3, 
+                    'Last 6 Months':last_6, 'Last Year':last_year, 'All Time':all_time}
 
     df_insights = pd.DataFrame(columns=['Time period', 'Miles', 'Dollars', 'Gallons', 
                                         'MPG', 'Avg gallon cost', 'Cost to go one mile (in cents)',
@@ -122,9 +118,3 @@ def insight_creator(df):
                                 round(sum(value['miles']) / sum(value['days_since_last_fillup']),2)]
     
     return df_insights
-
-df_insights = insight_creator(df)
-# %%
-# - lastly, just run the mpg_vis file to update all the visualizations
-if __name__ == '__main__':
-    import mpg_vis
