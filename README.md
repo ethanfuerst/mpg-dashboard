@@ -8,7 +8,7 @@ My mission for this project is to see how my miles per gallon fluctuates over th
 
 ### .py
 
-__*mpg_dashboard.py*__ - draft of [mpg dashboard](https://tidbitstatistics-mpg-dash.herokuapp.com/)
+__*app.py*__ - my [mpg dashboard](https://tidbitstatistics-mpg-dash.herokuapp.com/)
 
 __*mpg_data.py*__ - pulls and formats data from google sheet
 
@@ -30,6 +30,7 @@ __*mpg_data.py*__ - pulls and formats data from google sheet
   - [x] sync two line graphs in tableau dashboard in plotly
   - [x] figure out how to host vizs on blog using plotly graphs
 - [x] make mpg_insight plotly table
+- [x] move app to this directory
 - [ ] compare linear regression of metrics over different times
 - [ ] make 3D plot with miles driven, cost to go one mile and mpg
   - [ ] clustering?
