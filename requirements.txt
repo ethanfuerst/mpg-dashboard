@@ -1,0 +1,13 @@
+pandas
+numpy
+datetime
+dash
+dash_core_components
+dash_html_components
+plotly
+gspread
+oauth2client
+sklearn
+gunicorn
+environ
+django-environ

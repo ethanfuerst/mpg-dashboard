@@ -3,6 +3,11 @@
 .ipynb_checkpoints
 .~carmpg__*
 .~Gas Tank Dashboard*
+venv
+*.pyc
+.DS_Store
+.env
+
 
 # .command file that runs mpg_refresh.py
 mpg_update.command
