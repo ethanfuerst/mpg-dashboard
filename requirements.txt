@@ -9,5 +9,3 @@ gspread
 oauth2client
 sklearn
 gunicorn
-environ
-django-environ
