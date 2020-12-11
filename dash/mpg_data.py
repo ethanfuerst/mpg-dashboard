@@ -1,16 +1,16 @@
 import pandas as pd
 import numpy as np
 import datetime as dt
-import pickle
 import os
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date, timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 import urllib.request, json, time, sys
+import json
+import environ
 
 
 def money_format(x):
@@ -31,32 +31,36 @@ def get_data():
     Pulls mpg data from https://docs.google.com/spreadsheets/d/1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk
     and returns a formatted df
     '''
-    scope = ['https://www.googleapis.com/auth/spreadsheets']
-    spreadsheet_id = '1bTuNfyXJwygTJ8pQlo7PzdxfymQ_lB7DBzFoWHxJxkk'
-    range_name = 'Data!A:D'
-    creds = None
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', scope)
-            creds = flow.run_local_server(port=0)
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+    
+    env = environ.Env(
+        # set casting, default value
+        DEBUG=(bool, False)
+    )
 
-    service = build('sheets', 'v4', credentials=creds)
+    creds_dict = {
+        "type": "service_account",
+        "project_id": "mpg-dashboard-298303",
+        "private_key_id": env('private_key_id'),
+        "private_key": env('private_key').replace("\\n", "\n"),
+        "client_email": env('client_email'),
+        "client_id": env('client_id'),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": env('client_x509_cert_url')
+    }
 
-    sheets = service.spreadsheets()
+    with open('api_creds.json', 'w') as fp:
+        json.dump(creds_dict, fp)
 
-    result = sheets.values().get(spreadsheetId=spreadsheet_id,
-                                range=range_name).execute()
-    values = result.get('values', [])
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('api_creds.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open('MPG Data')
+    sheet_instance = sheet.get_worksheet(0)
+    records_data = sheet_instance.get_all_records()
+    df = pd.DataFrame.from_dict(records_data)
 
-    df = pd.DataFrame(columns=values[0], data=values[1:])
     df = df.replace(r'^\s*$', np.nan, regex=True).copy()
     df = df.dropna().copy()
 

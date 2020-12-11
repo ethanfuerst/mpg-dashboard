@@ -12,7 +12,9 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 from mpg_data import get_data, insight_creator, money_format, lin_reg
 
-app = dash.Dash(external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+app = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+
+server = app.server
 
 df = get_data()
 df_i = insight_creator(df)
@@ -28,7 +30,6 @@ scatter1_radio_options = [
                         ]
 scatter2_options = [{'label':str(i),'value':i} for i in ['Miles Per Gallon', 'Cost To Drive One Mile']]
 
-#! add cents to table headers
 app.layout = html.Div([
     dcc.Graph(id='scatter1'),
     html.Div([dcc.Dropdown(id='scatter1-kind', options=scatter1_options, value='Miles Per Gallon'),
@@ -106,7 +107,6 @@ app.layout = html.Div([
             )
 ])
 
-#! take off end of tool tip and hovermode on x axis
 @app.callback(Output('scatter1', 'figure'),
               [Input('scatter1-kind', 'value'),
               Input('scatter1-radio', 'value')])
@@ -125,12 +125,12 @@ def update_scatter1(graph_option, radio_option):
     else:
         if radio_option == 'values':
             y = df['gal_cost']
-            htemp = df['gal_cost'].apply(money_format) + ' on ' + df['date'].dt.strftime('%b %-d, %Y')
+            htemp = df['gal_cost'].apply(money_format) + ' on ' + df['date'].dt.strftime('%b %-d, %Y') + '<extra></extra>'
             line_color = "#1A4D94"
         else:
             y = df['gal_cost'].rolling(window=5).mean()
             htemp = '$' + round(df['gal_cost'].rolling(window=5).mean(),2).apply(lambda x: '{:.2f}'.format(x)) + ' on ' + \
-                    df['date'].dt.strftime('%b %-d, %Y')
+                    df['date'].dt.strftime('%b %-d, %Y') + '<extra></extra>'
             line_color = "#5C7DAA"
         Y_t = y * 10
         yrange = [df['gal_cost'].min() - .2, df['gal_cost'].max() + .2]
@@ -260,4 +260,4 @@ def update_scatter2(graph_option):
     }
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
