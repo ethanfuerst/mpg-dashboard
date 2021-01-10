@@ -1,4 +1,4 @@
-# mpg_data
+# mpg-dashboard
 
 My mission for this project is to build a dashboard using Plotly and Dash that will showcase the miles per gallon data from my car. Each time I fill up my car I record the miles I have driven since I last filled up, the gallons of gas I'm putting in my car, the price of the gas, and the date. With just this data, I'm able to create a lot of cool insights!
 
