@@ -112,3 +112,16 @@ def insight_creator(df):
                                 round(sum(value['miles']) / sum(value['days_since_last_fillup']),2)]
     
     return df_insights
+
+def last_10_creator(df):
+    last_10 = df.sort_values('date', ascending=False).head(10).copy()
+    last_10['date'] = last_10['date'].dt.strftime('%b %-d, %Y').astype(str)
+    last_10['miles'] = last_10['miles'].apply(lambda x: "{:,}".format(x))
+    last_10['dollars'] = last_10['dollars'].apply(lambda x: "${:,.2f}".format(x))
+    last_10['gallons'] = last_10['gallons'].apply(lambda x: "{:,.2f}".format(x))
+    last_10['mpg'] = round(last_10['mpg'], 2)
+    last_10['gal_cost'] = last_10['gal_cost'].apply(lambda x: '$' + str(x) + '0' if len(str(x)) < 4 else '$' + str(x))
+    last_10['tank%_used'] = (round(last_10['tank%_used'] * 100, 2)).astype(str) + '%'
+    last_10['dollars per mile'] = '$' + (round(last_10['dollars per mile'], 2)).astype(str).apply(lambda x: str(x) + '0' if len(str(x)) < 4 else str(x))
+
+    return last_10[['date', 'miles', 'dollars', 'gallons', 'mpg', 'gal_cost', 'tank%_used', 'dollars per mile', 'miles per day']].copy()
