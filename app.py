@@ -1,15 +1,9 @@
 import pandas as pd
-import numpy as np
 import datetime as dt
-import dash_table
-import random
+from dash import dash_table, dcc, html
 import math
-import os
-import urllib.request, json, time, sys
 import dash
-import dash_core_components as dcc
 import dash_bootstrap_components as dbc 
-import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 from mpg_data import get_data, insight_creator, last_10_creator, money_format, lin_reg
@@ -50,7 +44,8 @@ app.layout = html.Div([
     dbc.Row(
         html.H1(
             children='MPG Dashboard',
-            style={'textAlign': 'center'})
+            style={'textAlign': 'center'}
+        )
     ),
 
     html.Center(
@@ -280,7 +275,7 @@ def update_scatter2(graph_option):
         yrange = [y.min() - .5, y.max() + .5]
         ytick = [i for i in range(math.floor(y.min()), math.ceil(y.max()))]
         tick_text = [i  if i % 2 == 0 else '' for i in ytick]
-        annotation = "On average, I get " + (round(df_i['MPG'].iloc[-1], 2)).astype(str) + " miles per gallon"
+        annotation = "On average, I got " + (round(df_i['MPG'].iloc[-1], 2)).astype(str) + " miles per gallon"
 
     else:
         y = round(df['dollars per mile'] * 100, 2)
@@ -291,7 +286,7 @@ def update_scatter2(graph_option):
         yrange = [math.floor(y.min()), math.ceil(y.max())]
         ytick = [i for i in range(math.floor(y.min()), math.ceil(y.max()) + 1)]
         tick_text = [money_format(i) for i in [i/100 for i in range(math.floor(y.min()), math.ceil(y.max()) + 1)]]
-        annotation = "On average, it costs " + (round(df_i['Cost to go one mile (in cents)'].iloc[-1], 2)).astype(str) + \
+        annotation = "On average, it cost me " + (round(df_i['Cost to go one mile (in cents)'].iloc[-1], 2)).astype(str) + \
                     " cents to drive one mile"
                     
     if graph_option == 'Cost To Drive One Mile':
