@@ -3,4 +3,4 @@ venv
 .DS_Store
 .env
 .vscode
-env_var.py
+__pycache__
